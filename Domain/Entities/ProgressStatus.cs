@@ -11,6 +11,7 @@ namespace Domain.Entities
         ToDo,
         InPrograss,
         ToImprove,
+        ToCheck,
         Done
     }
 }

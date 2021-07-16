@@ -14,15 +14,15 @@ namespace Persistance.Configuration
         public void Configure(EntityTypeBuilder<ProjectEmployeeManager> builder)
         {
             builder.HasKey(k => new { k.EmployeeId, k.ProjectId, k.ManagerId });
-            builder.HasOne(pe => pe.Employee)
+            builder.HasOne(pem => pem.Employee)
                 .WithMany(e => e.Projects)
-                .HasForeignKey(pe => pe.EmployeeId);
-            builder.HasOne(pe => pe.Project)
+                .HasForeignKey(pem => pem.EmployeeId);
+            builder.HasOne(pem => pem.Project)
                 .WithMany(p => p.Projects)
-                .HasForeignKey(pe => pe.ProjectId);
-            builder.HasOne(pe => pe.Project)
+                .HasForeignKey(pem => pem.ProjectId);
+            builder.HasOne(pem => pem.Manager)
                .WithMany(m => m.Projects)
-               .HasForeignKey(pe => pe.ManagerId);
+               .HasForeignKey(pem => pem.ManagerId);
         }
     }
 }

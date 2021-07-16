@@ -122,8 +122,7 @@ namespace Persistance.Migrations
                 {
                     EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ManagerId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -135,14 +134,14 @@ namespace Persistance.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProjectEmployeeManagers_Managers_ManagerId1",
-                        column: x => x.ManagerId1,
+                        name: "FK_ProjectEmployeeManagers_Managers_ManagerId",
+                        column: x => x.ManagerId,
                         principalTable: "Managers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProjectEmployeeManagers_Projects_ManagerId",
-                        column: x => x.ManagerId,
+                        name: "FK_ProjectEmployeeManagers_Projects_ProjectId",
+                        column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -169,9 +168,9 @@ namespace Persistance.Migrations
                 column: "ManagerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectEmployeeManagers_ManagerId1",
+                name: "IX_ProjectEmployeeManagers_ProjectId",
                 table: "ProjectEmployeeManagers",
-                column: "ManagerId1");
+                column: "ProjectId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

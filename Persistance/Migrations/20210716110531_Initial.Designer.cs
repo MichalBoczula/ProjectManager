@@ -10,7 +10,7 @@ using Persistance.Context;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(ProjectManagerDbContext))]
-    [Migration("20210715180211_Initial")]
+    [Migration("20210716110531_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -223,14 +223,11 @@ namespace Persistance.Migrations
                     b.Property<Guid>("ManagerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ManagerId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("EmployeeId", "ProjectId", "ManagerId");
 
                     b.HasIndex("ManagerId");
 
-                    b.HasIndex("ManagerId1");
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("ProjectEmployeeManagers");
                 });
@@ -270,15 +267,15 @@ namespace Persistance.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Project", "Project")
+                    b.HasOne("Domain.Entities.Manager", "Manager")
                         .WithMany("Projects")
                         .HasForeignKey("ManagerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Manager", "Manager")
+                    b.HasOne("Domain.Entities.Project", "Project")
                         .WithMany("Projects")
-                        .HasForeignKey("ManagerId1")
+                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
