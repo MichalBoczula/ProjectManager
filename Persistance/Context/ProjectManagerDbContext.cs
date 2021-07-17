@@ -1,4 +1,5 @@
-﻿using Application.Contracts.Persistance;
+﻿using Application.Contracts.Identity;
+using Application.Contracts.Persistance;
 using Domain.Common;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -21,9 +22,11 @@ namespace Persistance.Context
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectAction> ProjectActions { get; set; }
         public DbSet<ProjectEmployeeManager> ProjectEmployeeManagers { get; set; }
+        private readonly ICurrentUserService _userService;
 
-        public ProjectManagerDbContext([NotNull] DbContextOptions<ProjectManagerDbContext> options) : base(options)
+        public ProjectManagerDbContext([NotNull] DbContextOptions<ProjectManagerDbContext> options, ICurrentUserService userService) : base(options)
         {
+            _userService = userService;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,19 +42,19 @@ namespace Persistance.Context
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.Entity.CreatedBy = "";
-                        entry.Entity.Created = DateTime.Now;
+                        entry.Entity.CreatedBy = _userService.Email;
+                        entry.Entity.Created = DateTimeOffset.Now;
                         entry.Entity.StatusId = 1;
                         break;
                     case EntityState.Modified:
-                        entry.Entity.ModifiedBy = "";
-                        entry.Entity.Modified = DateTime.Now;
+                        entry.Entity.ModifiedBy = _userService.Email;
+                        entry.Entity.Modified = DateTimeOffset.Now;
                         break;
                     case EntityState.Deleted:
-                        entry.Entity.ModifiedBy = "";
-                        entry.Entity.Modified = DateTime.Now;
-                        entry.Entity.Inactivated = DateTime.Now;
-                        entry.Entity.InactivatedBy = "";
+                        entry.Entity.ModifiedBy = _userService.Email;
+                        entry.Entity.Modified = DateTimeOffset.Now;
+                        entry.Entity.Inactivated = DateTimeOffset.Now;
+                        entry.Entity.InactivatedBy = _userService.Email;
                         entry.Entity.StatusId = 0;
                         entry.State = EntityState.Modified;
                         break;

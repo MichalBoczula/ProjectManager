@@ -3,6 +3,7 @@
 
 
 using IdentityModel;
+using IdentityServer4;
 using IdentityServer4.Models;
 using System.Collections.Generic;
 
@@ -15,7 +16,7 @@ namespace Identity
                    {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
-                new IdentityResource(name: "user", userClaims: new [] {JwtClaimTypes.Email })
+                new IdentityResources.Email()
                    };
 
         public static IEnumerable<ApiScope> ApiScopes =>
@@ -35,7 +36,7 @@ namespace Identity
                     ClientName = "Client for Postman user",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
                     ClientSecrets = { new Secret("secret".Sha256()) },
-                    AllowedScopes = { "api", "user"},
+                    AllowedScopes = { "api", IdentityServerConstants.StandardScopes.Email },
                     AlwaysSendClientClaims = true,
                     AlwaysIncludeUserClaimsInIdToken = true,
                     AllowAccessTokensViaBrowser = true
@@ -47,8 +48,7 @@ namespace Identity
                     ClientName = "Client for Swagger user",
                     AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                     ClientSecrets = {new Secret("secret".Sha256())},
-                    AllowedScopes = {"api", "user"},
-                    AlwaysSendClientClaims = true,
+                    AllowedScopes = {"api", IdentityServerConstants.StandardScopes.Email },
                     AlwaysIncludeUserClaimsInIdToken = true,
                     AllowAccessTokensViaBrowser=true,
                     RedirectUris = { "https://localhost:44383/swagger/oauth2-redirect.html" },
