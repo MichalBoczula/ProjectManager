@@ -60,7 +60,6 @@ namespace ProjectManager.API
                             Scopes = new Dictionary<string, string>
                             {
                                 {"api", "Full access" },
-                                {"email", "Email address" }
                             }
                         }
                     }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace ProjectManager.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/")]
     [Authorize]
     public class WeatherForecastController : ControllerBase
     {
@@ -31,7 +31,6 @@ namespace ProjectManager.API.Controllers
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
-            var email = _userService.Email;
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
