@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using Application.Features.Projects.Queries;
+using AutoMapper;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,8 @@ namespace Application.Profiles
     {
         public MappingProfiles()
         {
+            CreateMap<Project, ProjectInformationDto>();
+            CreateMap<ProjectAction, ProjectActionDto>();
         }
     }
 }

@@ -29,7 +29,8 @@ namespace Persistance.Seed
                     {
                         Id = firstEmployeeGuid,
                         FirstName = "Adam",
-                        LastName = "Kowalski"
+                        LastName = "Kowalski",
+                        Email = "AdamKowalski@email.com"
                     });
             modelBuilder.Entity<Employee>()
                 .HasData(
@@ -37,15 +38,17 @@ namespace Persistance.Seed
                     {
                         Id = secondEmployeeGuid,
                         FirstName = "Tomasz",
-                        LastName = "Nowak"
+                        LastName = "Nowak",
+                        Email = "TomaszNowak@email.com"
                     });
             modelBuilder.Entity<Employee>()
                 .HasData(
                     new Employee()
                     {
                         Id = thirdEmployeeGuid,
-                        FirstName = "Adam",
-                        LastName = "Smith"
+                        FirstName = "John",
+                        LastName = "Smith",
+                        Email = "JohnSmith@email.com"
                     });
             modelBuilder.Entity<Manager>()
                 .HasData(
@@ -53,7 +56,8 @@ namespace Persistance.Seed
                     {
                         Id = managerGuid,
                         FirstName = "Paul",
-                        LastName = "Allen"
+                        LastName = "Allen",
+                        Email = "PaulAllen@email.com"
                     });
             #endregion
 

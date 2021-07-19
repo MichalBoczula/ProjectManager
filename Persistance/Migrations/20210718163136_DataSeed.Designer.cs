@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistance.Context;
 
 namespace Persistance.Migrations
 {
     [DbContext(typeof(ProjectManagerDbContext))]
-    partial class ProjectManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210718163136_DataSeed")]
+    partial class DataSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,9 +64,8 @@ namespace Persistance.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9ce70e45-55f3-4d53-af03-e1b24c97339b"),
+                            Id = new Guid("d02cce8c-b217-45c9-9811-addfe93a0d37"),
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Email = "AdamKowalski@email.com",
                             FirstName = "Adam",
                             Inactivated = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             LastName = "Kowalski",
@@ -73,9 +74,8 @@ namespace Persistance.Migrations
                         },
                         new
                         {
-                            Id = new Guid("7c2cc216-d5cc-4062-97ca-e326e590e9f9"),
+                            Id = new Guid("b5e4bb9a-99f3-4d2a-b7e8-b480edc21aac"),
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Email = "TomaszNowak@email.com",
                             FirstName = "Tomasz",
                             Inactivated = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             LastName = "Nowak",
@@ -84,10 +84,9 @@ namespace Persistance.Migrations
                         },
                         new
                         {
-                            Id = new Guid("c01423b5-9980-4210-92df-3a2fcbf5b664"),
+                            Id = new Guid("29ff9906-d68b-4366-b40a-5672471916a6"),
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Email = "JohnSmith@email.com",
-                            FirstName = "John",
+                            FirstName = "Adam",
                             Inactivated = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             LastName = "Smith",
                             Modified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -138,9 +137,8 @@ namespace Persistance.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b517ef40-f882-48cf-8649-cbca908e0787"),
+                            Id = new Guid("c4ed8a87-2104-448e-bcbb-3faf7f20fc52"),
                             Created = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Email = "PaulAllen@email.com",
                             FirstName = "Paul",
                             Inactivated = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             LastName = "Allen",
@@ -192,8 +190,8 @@ namespace Persistance.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("64652d35-1df7-4331-80ef-aef7d620e046"),
-                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 292, DateTimeKind.Unspecified).AddTicks(7145), new TimeSpan(0, 2, 0, 0, 0)),
+                            Id = new Guid("09288712-3ae5-430c-8142-5f32c48df7a6"),
+                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 236, DateTimeKind.Unspecified).AddTicks(707), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "Admin",
                             Description = "Backend API project in CQRS architecture pattern.",
                             Inactivated = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -204,8 +202,8 @@ namespace Persistance.Migrations
                         },
                         new
                         {
-                            Id = new Guid("7febeceb-6e20-4151-871b-d5324c0f735b"),
-                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 296, DateTimeKind.Unspecified).AddTicks(706), new TimeSpan(0, 2, 0, 0, 0)),
+                            Id = new Guid("63e28160-9811-435f-b3bd-34649e181c3f"),
+                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(5726), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "Admin",
                             Description = "DB infrastructure create in Code First approach.",
                             Inactivated = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -216,8 +214,8 @@ namespace Persistance.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d5212365-524a-430d-ac75-14a0983edf62"),
-                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 296, DateTimeKind.Unspecified).AddTicks(849), new TimeSpan(0, 2, 0, 0, 0)),
+                            Id = new Guid("dc4870ae-30ed-4de8-8f12-4175516e6d84"),
+                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(5857), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "Admin",
                             Description = "Create consumer for API in Angular framework.",
                             Inactivated = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -298,228 +296,228 @@ namespace Persistance.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("55079b39-ebbf-4e66-bbe8-89b308b46d47"),
-                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 295, DateTimeKind.Unspecified).AddTicks(8546), new TimeSpan(0, 2, 0, 0, 0)),
+                            Id = new Guid("81e9d377-7a3c-4979-94f8-fb814fda43e0"),
+                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(3707), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "Admin",
                             DeadLine = new DateTimeOffset(new DateTime(1, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Make domain classes",
                             Done = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            EmployeeId = new Guid("9ce70e45-55f3-4d53-af03-e1b24c97339b"),
-                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 295, DateTimeKind.Unspecified).AddTicks(8598), new TimeSpan(0, 2, 0, 0, 0)),
+                            EmployeeId = new Guid("d02cce8c-b217-45c9-9811-addfe93a0d37"),
+                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(3759), new TimeSpan(0, 2, 0, 0, 0)),
                             Feedback = "",
                             Inactivated = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ManagerId = new Guid("b517ef40-f882-48cf-8649-cbca908e0787"),
+                            ManagerId = new Guid("c4ed8a87-2104-448e-bcbb-3faf7f20fc52"),
                             Modified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProjectId = new Guid("64652d35-1df7-4331-80ef-aef7d620e046"),
+                            ProjectId = new Guid("09288712-3ae5-430c-8142-5f32c48df7a6"),
                             Status = 0,
                             StatusId = 1,
                             Title = "Domain"
                         },
                         new
                         {
-                            Id = new Guid("21b21a7e-402f-4fa0-850f-0a22f48193dd"),
-                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 295, DateTimeKind.Unspecified).AddTicks(9634), new TimeSpan(0, 2, 0, 0, 0)),
+                            Id = new Guid("ec3fa388-63fd-4fa8-822d-7fc76e7bf9ac"),
+                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(4697), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "Admin",
                             DeadLine = new DateTimeOffset(new DateTime(1, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Write Queries and Commands",
                             Done = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            EmployeeId = new Guid("9ce70e45-55f3-4d53-af03-e1b24c97339b"),
-                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 295, DateTimeKind.Unspecified).AddTicks(9647), new TimeSpan(0, 2, 0, 0, 0)),
+                            EmployeeId = new Guid("d02cce8c-b217-45c9-9811-addfe93a0d37"),
+                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(4708), new TimeSpan(0, 2, 0, 0, 0)),
                             Feedback = "",
                             Inactivated = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ManagerId = new Guid("b517ef40-f882-48cf-8649-cbca908e0787"),
+                            ManagerId = new Guid("c4ed8a87-2104-448e-bcbb-3faf7f20fc52"),
                             Modified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProjectId = new Guid("64652d35-1df7-4331-80ef-aef7d620e046"),
+                            ProjectId = new Guid("09288712-3ae5-430c-8142-5f32c48df7a6"),
                             Status = 0,
                             StatusId = 1,
                             Title = "Application"
                         },
                         new
                         {
-                            Id = new Guid("5e915da5-4443-4aef-8005-4ef673dc4cb3"),
-                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 295, DateTimeKind.Unspecified).AddTicks(9672), new TimeSpan(0, 2, 0, 0, 0)),
+                            Id = new Guid("f473e0e6-b21f-4e8d-961e-78e360c15009"),
+                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(4731), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "Admin",
                             DeadLine = new DateTimeOffset(new DateTime(1, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Write and run unit tests",
                             Done = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            EmployeeId = new Guid("9ce70e45-55f3-4d53-af03-e1b24c97339b"),
-                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 295, DateTimeKind.Unspecified).AddTicks(9676), new TimeSpan(0, 2, 0, 0, 0)),
+                            EmployeeId = new Guid("d02cce8c-b217-45c9-9811-addfe93a0d37"),
+                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(4735), new TimeSpan(0, 2, 0, 0, 0)),
                             Feedback = "",
                             Inactivated = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ManagerId = new Guid("b517ef40-f882-48cf-8649-cbca908e0787"),
+                            ManagerId = new Guid("c4ed8a87-2104-448e-bcbb-3faf7f20fc52"),
                             Modified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProjectId = new Guid("64652d35-1df7-4331-80ef-aef7d620e046"),
+                            ProjectId = new Guid("09288712-3ae5-430c-8142-5f32c48df7a6"),
                             Status = 0,
                             StatusId = 1,
                             Title = "UnitTests"
                         },
                         new
                         {
-                            Id = new Guid("4c5df007-6f46-43cc-83ad-26d72fb1567d"),
-                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 295, DateTimeKind.Unspecified).AddTicks(9698), new TimeSpan(0, 2, 0, 0, 0)),
+                            Id = new Guid("4089a299-a777-4eb6-82ac-a95b399c539a"),
+                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(4755), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "Admin",
                             DeadLine = new DateTimeOffset(new DateTime(1, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Create API Controllers",
                             Done = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            EmployeeId = new Guid("9ce70e45-55f3-4d53-af03-e1b24c97339b"),
-                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 295, DateTimeKind.Unspecified).AddTicks(9702), new TimeSpan(0, 2, 0, 0, 0)),
+                            EmployeeId = new Guid("d02cce8c-b217-45c9-9811-addfe93a0d37"),
+                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(4758), new TimeSpan(0, 2, 0, 0, 0)),
                             Feedback = "",
                             Inactivated = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ManagerId = new Guid("b517ef40-f882-48cf-8649-cbca908e0787"),
+                            ManagerId = new Guid("c4ed8a87-2104-448e-bcbb-3faf7f20fc52"),
                             Modified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProjectId = new Guid("64652d35-1df7-4331-80ef-aef7d620e046"),
+                            ProjectId = new Guid("09288712-3ae5-430c-8142-5f32c48df7a6"),
                             Status = 0,
                             StatusId = 1,
                             Title = "API"
                         },
                         new
                         {
-                            Id = new Guid("1d7d4c4d-669f-4778-9fad-a9d18c3dfb24"),
-                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 295, DateTimeKind.Unspecified).AddTicks(9724), new TimeSpan(0, 2, 0, 0, 0)),
+                            Id = new Guid("1e03852f-e94d-4687-8c0e-ae95607ef4a6"),
+                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(4779), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "Admin",
                             DeadLine = new DateTimeOffset(new DateTime(1, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Create and run Integration Tests",
                             Done = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            EmployeeId = new Guid("7c2cc216-d5cc-4062-97ca-e326e590e9f9"),
-                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 295, DateTimeKind.Unspecified).AddTicks(9728), new TimeSpan(0, 2, 0, 0, 0)),
+                            EmployeeId = new Guid("b5e4bb9a-99f3-4d2a-b7e8-b480edc21aac"),
+                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(4782), new TimeSpan(0, 2, 0, 0, 0)),
                             Feedback = "",
                             Inactivated = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ManagerId = new Guid("b517ef40-f882-48cf-8649-cbca908e0787"),
+                            ManagerId = new Guid("c4ed8a87-2104-448e-bcbb-3faf7f20fc52"),
                             Modified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProjectId = new Guid("64652d35-1df7-4331-80ef-aef7d620e046"),
+                            ProjectId = new Guid("09288712-3ae5-430c-8142-5f32c48df7a6"),
                             Status = 0,
                             StatusId = 1,
                             Title = "Integration Tests"
                         },
                         new
                         {
-                            Id = new Guid("b64135b4-7a9f-4272-b129-b22288340840"),
-                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 296, DateTimeKind.Unspecified).AddTicks(757), new TimeSpan(0, 2, 0, 0, 0)),
+                            Id = new Guid("2e680500-9fb3-4877-9a2e-b726d58241f4"),
+                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(5760), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "Admin",
                             DeadLine = new DateTimeOffset(new DateTime(1, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Create Db schema",
                             Done = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            EmployeeId = new Guid("7c2cc216-d5cc-4062-97ca-e326e590e9f9"),
-                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 296, DateTimeKind.Unspecified).AddTicks(761), new TimeSpan(0, 2, 0, 0, 0)),
+                            EmployeeId = new Guid("b5e4bb9a-99f3-4d2a-b7e8-b480edc21aac"),
+                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(5763), new TimeSpan(0, 2, 0, 0, 0)),
                             Feedback = "",
                             Inactivated = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ManagerId = new Guid("b517ef40-f882-48cf-8649-cbca908e0787"),
+                            ManagerId = new Guid("c4ed8a87-2104-448e-bcbb-3faf7f20fc52"),
                             Modified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProjectId = new Guid("7febeceb-6e20-4151-871b-d5324c0f735b"),
+                            ProjectId = new Guid("63e28160-9811-435f-b3bd-34649e181c3f"),
                             Status = 0,
                             StatusId = 1,
                             Title = "Schema"
                         },
                         new
                         {
-                            Id = new Guid("91aa95f4-e609-4c8e-a62c-787a5936172b"),
-                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 296, DateTimeKind.Unspecified).AddTicks(783), new TimeSpan(0, 2, 0, 0, 0)),
+                            Id = new Guid("e8cd99fa-259d-469c-a59e-8fbbeb5770ce"),
+                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(5783), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "Admin",
                             DeadLine = new DateTimeOffset(new DateTime(1, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Create data seed",
                             Done = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            EmployeeId = new Guid("7c2cc216-d5cc-4062-97ca-e326e590e9f9"),
-                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 296, DateTimeKind.Unspecified).AddTicks(787), new TimeSpan(0, 2, 0, 0, 0)),
+                            EmployeeId = new Guid("b5e4bb9a-99f3-4d2a-b7e8-b480edc21aac"),
+                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(5787), new TimeSpan(0, 2, 0, 0, 0)),
                             Feedback = "",
                             Inactivated = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ManagerId = new Guid("b517ef40-f882-48cf-8649-cbca908e0787"),
+                            ManagerId = new Guid("c4ed8a87-2104-448e-bcbb-3faf7f20fc52"),
                             Modified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProjectId = new Guid("7febeceb-6e20-4151-871b-d5324c0f735b"),
+                            ProjectId = new Guid("63e28160-9811-435f-b3bd-34649e181c3f"),
                             Status = 0,
                             StatusId = 1,
                             Title = "Data seed"
                         },
                         new
                         {
-                            Id = new Guid("ba502bb1-ee5b-41a4-b928-80fa83662fe7"),
-                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 296, DateTimeKind.Unspecified).AddTicks(808), new TimeSpan(0, 2, 0, 0, 0)),
+                            Id = new Guid("21106bb2-53ff-4f84-abac-b87e0d8f0da7"),
+                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(5820), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "Admin",
                             DeadLine = new DateTimeOffset(new DateTime(1, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Initial Db with test data",
                             Done = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            EmployeeId = new Guid("7c2cc216-d5cc-4062-97ca-e326e590e9f9"),
-                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 296, DateTimeKind.Unspecified).AddTicks(812), new TimeSpan(0, 2, 0, 0, 0)),
+                            EmployeeId = new Guid("b5e4bb9a-99f3-4d2a-b7e8-b480edc21aac"),
+                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(5824), new TimeSpan(0, 2, 0, 0, 0)),
                             Feedback = "",
                             Inactivated = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ManagerId = new Guid("b517ef40-f882-48cf-8649-cbca908e0787"),
+                            ManagerId = new Guid("c4ed8a87-2104-448e-bcbb-3faf7f20fc52"),
                             Modified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProjectId = new Guid("7febeceb-6e20-4151-871b-d5324c0f735b"),
+                            ProjectId = new Guid("63e28160-9811-435f-b3bd-34649e181c3f"),
                             Status = 0,
                             StatusId = 1,
                             Title = "Initial Migration"
                         },
                         new
                         {
-                            Id = new Guid("feea797f-23a9-49b8-814e-2fea80703363"),
-                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 296, DateTimeKind.Unspecified).AddTicks(871), new TimeSpan(0, 2, 0, 0, 0)),
+                            Id = new Guid("981d4c09-0eb6-4faf-9e61-4895c3419472"),
+                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(5878), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "Admin",
                             DeadLine = new DateTimeOffset(new DateTime(1, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Plan UI for application",
                             Done = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            EmployeeId = new Guid("c01423b5-9980-4210-92df-3a2fcbf5b664"),
-                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 296, DateTimeKind.Unspecified).AddTicks(875), new TimeSpan(0, 2, 0, 0, 0)),
+                            EmployeeId = new Guid("29ff9906-d68b-4366-b40a-5672471916a6"),
+                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(5881), new TimeSpan(0, 2, 0, 0, 0)),
                             Feedback = "",
                             Inactivated = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ManagerId = new Guid("b517ef40-f882-48cf-8649-cbca908e0787"),
+                            ManagerId = new Guid("c4ed8a87-2104-448e-bcbb-3faf7f20fc52"),
                             Modified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProjectId = new Guid("d5212365-524a-430d-ac75-14a0983edf62"),
+                            ProjectId = new Guid("dc4870ae-30ed-4de8-8f12-4175516e6d84"),
                             Status = 0,
                             StatusId = 1,
                             Title = "UI Plan"
                         },
                         new
                         {
-                            Id = new Guid("82e5121c-f30b-4b50-b2c3-b89983dd86c1"),
-                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 296, DateTimeKind.Unspecified).AddTicks(899), new TimeSpan(0, 2, 0, 0, 0)),
+                            Id = new Guid("e9382375-c064-4c5f-9d53-822d9a8e59e9"),
+                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(5904), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "Admin",
                             DeadLine = new DateTimeOffset(new DateTime(1, 3, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Create angular components",
                             Done = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            EmployeeId = new Guid("c01423b5-9980-4210-92df-3a2fcbf5b664"),
-                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 296, DateTimeKind.Unspecified).AddTicks(903), new TimeSpan(0, 2, 0, 0, 0)),
+                            EmployeeId = new Guid("29ff9906-d68b-4366-b40a-5672471916a6"),
+                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(5907), new TimeSpan(0, 2, 0, 0, 0)),
                             Feedback = "",
                             Inactivated = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ManagerId = new Guid("b517ef40-f882-48cf-8649-cbca908e0787"),
+                            ManagerId = new Guid("c4ed8a87-2104-448e-bcbb-3faf7f20fc52"),
                             Modified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProjectId = new Guid("d5212365-524a-430d-ac75-14a0983edf62"),
+                            ProjectId = new Guid("dc4870ae-30ed-4de8-8f12-4175516e6d84"),
                             Status = 0,
                             StatusId = 1,
                             Title = "Create components"
                         },
                         new
                         {
-                            Id = new Guid("81927181-10cb-438b-a19a-05a3628d621c"),
-                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 296, DateTimeKind.Unspecified).AddTicks(974), new TimeSpan(0, 2, 0, 0, 0)),
+                            Id = new Guid("4b2f2b73-16ab-433e-a4cd-e529fc052a0a"),
+                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(5951), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "Admin",
                             DeadLine = new DateTimeOffset(new DateTime(1, 3, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Connect Frontent with Backend via API",
                             Done = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            EmployeeId = new Guid("c01423b5-9980-4210-92df-3a2fcbf5b664"),
-                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 296, DateTimeKind.Unspecified).AddTicks(979), new TimeSpan(0, 2, 0, 0, 0)),
+                            EmployeeId = new Guid("29ff9906-d68b-4366-b40a-5672471916a6"),
+                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(5955), new TimeSpan(0, 2, 0, 0, 0)),
                             Feedback = "",
                             Inactivated = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ManagerId = new Guid("b517ef40-f882-48cf-8649-cbca908e0787"),
+                            ManagerId = new Guid("c4ed8a87-2104-448e-bcbb-3faf7f20fc52"),
                             Modified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProjectId = new Guid("d5212365-524a-430d-ac75-14a0983edf62"),
+                            ProjectId = new Guid("dc4870ae-30ed-4de8-8f12-4175516e6d84"),
                             Status = 0,
                             StatusId = 1,
                             Title = "Conection with API"
                         },
                         new
                         {
-                            Id = new Guid("8d499699-f3fe-43d9-b0f6-4649fa939ff1"),
-                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 296, DateTimeKind.Unspecified).AddTicks(1001), new TimeSpan(0, 2, 0, 0, 0)),
+                            Id = new Guid("2eff24d2-0345-4517-b506-d293d1127fe2"),
+                            Created = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(5975), new TimeSpan(0, 2, 0, 0, 0)),
                             CreatedBy = "Admin",
                             DeadLine = new DateTimeOffset(new DateTime(1, 3, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Add css",
                             Done = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            EmployeeId = new Guid("c01423b5-9980-4210-92df-3a2fcbf5b664"),
-                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 45, 53, 296, DateTimeKind.Unspecified).AddTicks(1004), new TimeSpan(0, 2, 0, 0, 0)),
+                            EmployeeId = new Guid("29ff9906-d68b-4366-b40a-5672471916a6"),
+                            Established = new DateTimeOffset(new DateTime(2021, 7, 18, 18, 31, 36, 239, DateTimeKind.Unspecified).AddTicks(5979), new TimeSpan(0, 2, 0, 0, 0)),
                             Feedback = "",
                             Inactivated = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ManagerId = new Guid("b517ef40-f882-48cf-8649-cbca908e0787"),
+                            ManagerId = new Guid("c4ed8a87-2104-448e-bcbb-3faf7f20fc52"),
                             Modified = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            ProjectId = new Guid("d5212365-524a-430d-ac75-14a0983edf62"),
+                            ProjectId = new Guid("dc4870ae-30ed-4de8-8f12-4175516e6d84"),
                             Status = 0,
                             StatusId = 1,
                             Title = "Application style"
@@ -548,27 +546,27 @@ namespace Persistance.Migrations
                     b.HasData(
                         new
                         {
-                            EmployeeId = new Guid("9ce70e45-55f3-4d53-af03-e1b24c97339b"),
-                            ProjectId = new Guid("64652d35-1df7-4331-80ef-aef7d620e046"),
-                            ManagerId = new Guid("b517ef40-f882-48cf-8649-cbca908e0787")
+                            EmployeeId = new Guid("d02cce8c-b217-45c9-9811-addfe93a0d37"),
+                            ProjectId = new Guid("09288712-3ae5-430c-8142-5f32c48df7a6"),
+                            ManagerId = new Guid("c4ed8a87-2104-448e-bcbb-3faf7f20fc52")
                         },
                         new
                         {
-                            EmployeeId = new Guid("7c2cc216-d5cc-4062-97ca-e326e590e9f9"),
-                            ProjectId = new Guid("64652d35-1df7-4331-80ef-aef7d620e046"),
-                            ManagerId = new Guid("b517ef40-f882-48cf-8649-cbca908e0787")
+                            EmployeeId = new Guid("b5e4bb9a-99f3-4d2a-b7e8-b480edc21aac"),
+                            ProjectId = new Guid("09288712-3ae5-430c-8142-5f32c48df7a6"),
+                            ManagerId = new Guid("c4ed8a87-2104-448e-bcbb-3faf7f20fc52")
                         },
                         new
                         {
-                            EmployeeId = new Guid("7c2cc216-d5cc-4062-97ca-e326e590e9f9"),
-                            ProjectId = new Guid("7febeceb-6e20-4151-871b-d5324c0f735b"),
-                            ManagerId = new Guid("b517ef40-f882-48cf-8649-cbca908e0787")
+                            EmployeeId = new Guid("b5e4bb9a-99f3-4d2a-b7e8-b480edc21aac"),
+                            ProjectId = new Guid("63e28160-9811-435f-b3bd-34649e181c3f"),
+                            ManagerId = new Guid("c4ed8a87-2104-448e-bcbb-3faf7f20fc52")
                         },
                         new
                         {
-                            EmployeeId = new Guid("c01423b5-9980-4210-92df-3a2fcbf5b664"),
-                            ProjectId = new Guid("d5212365-524a-430d-ac75-14a0983edf62"),
-                            ManagerId = new Guid("b517ef40-f882-48cf-8649-cbca908e0787")
+                            EmployeeId = new Guid("29ff9906-d68b-4366-b40a-5672471916a6"),
+                            ProjectId = new Guid("dc4870ae-30ed-4de8-8f12-4175516e6d84"),
+                            ManagerId = new Guid("c4ed8a87-2104-448e-bcbb-3faf7f20fc52")
                         });
                 });
 

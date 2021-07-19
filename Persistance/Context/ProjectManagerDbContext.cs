@@ -29,6 +29,10 @@ namespace Persistance.Context
             _userService = userService;
         }
 
+        public ProjectManagerDbContext([NotNull] DbContextOptions<ProjectManagerDbContext> options) : base(options)
+        {
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
