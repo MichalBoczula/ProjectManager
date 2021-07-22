@@ -25,17 +25,20 @@ namespace Application.Features.Projects.Queries
         public async Task<List<ProjectVm>> Handle(ProjectsListForEmployeeQuery request, CancellationToken cancellationToken)
         {
 
-            var query = from e in _context.Employees
-                        where e.Email == request.Email
-                        join pa in _context.ProjectActions
-                            on e.Id equals pa.EmployeeId
-                        join p in _context.Projects
-                            on pa.ProjectId equals p.Id
-                        group pa by p.Id into x
-                        select x;
+            var eId = from e in _context.Employees
+                      where e.Email == request.Email
+                      select e.Id;
+            var query = from pa in _context.ProjectActions.AsEnumerable()
+                        where pa.EmployeeId == eId.FirstOrDefault()
+                        group pa by pa.ProjectId into x
+                        select new
+                        {
+                            x.Key,
+                            Actions = x.ToList()
+                        };
+
             var list = new List<ProjectVm>();
-            var l = query.ToListAsync(cancellationToken: cancellationToken);
-            //foreach (var ele in await query.ToListAsync(cancellationToken: cancellationToken))
+            //foreach (var ele in query)
             //{
             //    var projectVm = new ProjectVm()
             //    {
