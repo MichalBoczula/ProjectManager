@@ -74,11 +74,12 @@ namespace Persistance.Seed
                         Created = DateTimeOffset.Now,
                         StatusId = 1
                     });
+            var testId = new Guid("21b21a7e-402f-4fa0-850f-0a22f48193dd");
             modelBuilder.Entity<ProjectAction>()
               .HasData(
                   new ProjectAction()
                   {
-                      Id = Guid.NewGuid(),
+                      Id = testId,
                       Title = "Domain",
                       Description = "Make domain classes",
                       Feedback = "",

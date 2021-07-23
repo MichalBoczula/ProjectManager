@@ -36,20 +36,17 @@ namespace UnitTests.Features.Projects.Queries.ProjectsActions.List
                     cancellationToken: CancellationToken.None);
             //assert
             result.ShouldBeOfType<List<ProjectVm>>();
-            foreach(var ele in result)
+            foreach (var ele in result)
             {
                 ele.Project.Description.ShouldNotBeNullOrWhiteSpace();
                 ele.Project.Title.ShouldNotBeNullOrWhiteSpace();
                 ele.Project.Status.ShouldNotBeNullOrWhiteSpace();
                 ele.ProjectActions.Count.ShouldBeGreaterThan(0);
-                foreach(var action in ele.ProjectActions)
+                foreach (var action in ele.ProjectActions)
                 {
                     action.Status.ShouldNotBeNullOrWhiteSpace();
                     action.Title.ShouldNotBeNullOrWhiteSpace();
                     action.Description.ShouldNotBeNullOrWhiteSpace();
-                    action.DeadLine.ShouldBeOfType<DateTimeOffset>();
-                    action.Done.ShouldBeOfType<DateTimeOffset>();
-                    action.Established.ShouldBeOfType<DateTimeOffset>();
                 }
             }
         }
