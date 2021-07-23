@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Projects.Queries
+namespace Application.Features.ProjectsActions.Queries.List
 {
     public class ProjectsListForEmployeeQuery : IRequest<List<ProjectVm>>
     {

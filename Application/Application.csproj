@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Projects\Commands\" />
+    <Folder Include="Features\ProjectsActions\Commands\" />
   </ItemGroup>
 
 </Project>

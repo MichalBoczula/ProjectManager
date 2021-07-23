@@ -5,13 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Projects.Queries
+namespace Application.Features.ProjectsActions.Queries.List
 {
     public class ProjectInformationDto
     {
-        public ProgressStatus Status { get; set; }
+        public string Status { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Feedback { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Application.Contracts.Persistance;
 using AutoMapper;
+using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Features.Projects.Queries
+namespace Application.Features.ProjectsActions.Queries.List
 {
     public class ProjectsListForEmployeeQueryHandler : IRequestHandler<ProjectsListForEmployeeQuery, List<ProjectVm>>
     {
@@ -36,16 +37,24 @@ namespace Application.Features.Projects.Queries
                             x.Key,
                             Actions = x.ToList()
                         };
-
             var list = new List<ProjectVm>();
-            //foreach (var ele in query)
-            //{
-            //    var projectVm = new ProjectVm()
-            //    {
-            //        ProjectAction = _mapper.Map<ProjectActionDto>(ele.pa)
-            //    };
-            //    list.Add(projectVm);
-            //}
+            foreach (var ele in query)
+            {
+                var projectActions = new List<ProjectActionDto>();
+                foreach (var e in ele.Actions)
+                {
+                    projectActions.Add(_mapper.Map<ProjectActionDto>((ProjectAction)e));
+                }
+                var project = from p in _context.Projects
+                              where p.Id == ele.Key
+                              select p;
+                var projectVm = new ProjectVm()
+                {
+                    Project = _mapper.Map<ProjectInformationDto>(await project.FirstOrDefaultAsync()),
+                    ProjectActions = projectActions
+                };
+                list.Add(projectVm);
+            }
             return list;
         }
     }

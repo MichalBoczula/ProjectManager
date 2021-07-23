@@ -1,4 +1,4 @@
-﻿using Application.Features.Projects.Queries;
+﻿using Application.Features.ProjectsActions.Queries.List;
 using AutoMapper;
 using Domain.Entities;
 using System;
@@ -13,8 +13,10 @@ namespace Application.Profiles
     {
         public MappingProfiles()
         {
-            CreateMap<Project, ProjectInformationDto>();
-            CreateMap<ProjectAction, ProjectActionDto>();
+            CreateMap<Project, ProjectInformationDto>()
+                .ForMember(p => p.Status, opt => opt.MapFrom(x => x.Status.ToString()));
+            CreateMap<ProjectAction, ProjectActionDto>()
+                .ForMember(pa => pa.Status, opt => opt.MapFrom(x => x.Status.ToString()));
         }
     }
 }
