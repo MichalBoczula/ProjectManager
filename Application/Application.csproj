@@ -17,7 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\ProjectsActions\Commands\" />
+    <Folder Include="Features\ManagerProjectAction\Commands\Accept\" />
+    <Folder Include="Features\ManagerProjectAction\Commands\ToImprove\" />
+    <Folder Include="Features\ManagerProjectAction\Queries\List\" />
+    <Folder Include="Features\ManagerProjectAction\Queries\Details\" />
+    <Folder Include="Features\StatisticsForManager\Queries\" />
   </ItemGroup>
 
 </Project>

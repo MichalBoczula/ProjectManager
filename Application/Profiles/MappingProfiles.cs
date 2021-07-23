@@ -1,5 +1,5 @@
-﻿using Application.Features.ProjectsActions.Queries.Details;
-using Application.Features.ProjectsActions.Queries.List;
+﻿using Application.Features.EmployeeProjectsActions.Queries.Details;
+using Application.Features.EmployeeProjectsActions.Queries.List;
 using AutoMapper;
 using Domain.Entities;
 using System;

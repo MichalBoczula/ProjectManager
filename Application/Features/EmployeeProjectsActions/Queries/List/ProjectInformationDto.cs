@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.ProjectsActions.Queries.List
+namespace Application.Features.EmployeeProjectsActions.Queries.List
 {
-    public class ProjectActionDto
+    public class ProjectInformationDto
     {
         public string Status { get; set; }
         public string Title { get; set; }

@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 using System.Collections.Generic;
 
-namespace Application.Features.ProjectsActions.Queries.List
+namespace Application.Features.EmployeeProjectsActions.Queries.List
 {
     public class ProjectVm
     {

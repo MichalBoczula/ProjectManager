@@ -1,4 +1,4 @@
-﻿namespace Application.Features.ProjectsActions.Queries.Details
+﻿namespace Application.Features.EmployeeProjectsActions.Queries.Details
 {
     public class ManagerForProjectDetailsDto
     {

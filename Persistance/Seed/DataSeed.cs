@@ -14,13 +14,13 @@ namespace Persistance.Seed
         {
 
             #region General
-            var firstProjectGuid = Guid.NewGuid();
-            var secondProjectGuid = Guid.NewGuid();
-            var thirdProjectGuid = Guid.NewGuid();
-            var firstEmployeeGuid = Guid.NewGuid();
-            var secondEmployeeGuid = Guid.NewGuid();
-            var thirdEmployeeGuid = Guid.NewGuid();
-            var managerGuid = Guid.NewGuid();
+            var firstProjectGuid = new Guid("d5212365-524a-430d-ac75-14a0983edf62");
+            var secondProjectGuid = new Guid("64652d35-1df7-4331-80ef-aef7d620e046");
+            var thirdProjectGuid = new Guid("7febeceb-6e20-4151-871b-d5324c0f735b");
+            var firstEmployeeGuid = new Guid("c01423b5-9980-4210-92df-3a2fcbf5b664");
+            var secondEmployeeGuid = new Guid("9ce70e45-55f3-4d53-af03-e1b24c97339b");
+            var thirdEmployeeGuid = new Guid("7c2cc216-d5cc-4062-97ca-e326e590e9f9");
+            var managerGuid = new Guid("b517ef40-f882-48cf-8649-cbca908e0787");
             var deadline = new DateTimeOffset();
             deadline = deadline.AddMonths(2);
             modelBuilder.Entity<Employee>()
@@ -62,6 +62,7 @@ namespace Persistance.Seed
             #endregion
 
             #region First Project
+            var testId = new Guid("21b21a7e-402f-4fa0-850f-0a22f48193dd");
             modelBuilder.Entity<Project>()
                 .HasData(
                     new Project()
@@ -74,7 +75,6 @@ namespace Persistance.Seed
                         Created = DateTimeOffset.Now,
                         StatusId = 1
                     });
-            var testId = new Guid("21b21a7e-402f-4fa0-850f-0a22f48193dd");
             modelBuilder.Entity<ProjectAction>()
               .HasData(
                   new ProjectAction()

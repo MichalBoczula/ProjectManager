@@ -1,5 +1,4 @@
-﻿using Application.Features.ProjectsActions.Queries.Details;
-using Application.Features.ProjectsActions.Queries.List;
+﻿using Application.Features.EmployeeProjectsActions.Queries.Details;
 using AutoMapper;
 using Persistance.Context;
 using Shouldly;
@@ -12,7 +11,7 @@ using System.Threading.Tasks;
 using UnitTests.Common;
 using Xunit;
 
-namespace UnitTests.Features.Projects.Queries.ProjectsActions.Details
+namespace UnitTests.Features.Projects.EmployeeProjectsActions.Queries.Details
 {
     [Collection("QueryCollection")]
     public class ProjectActionDetailsQueryHandlerTest

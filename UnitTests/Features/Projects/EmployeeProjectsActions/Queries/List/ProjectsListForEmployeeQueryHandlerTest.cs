@@ -1,4 +1,4 @@
-using Application.Features.ProjectsActions.Queries.List;
+using Application.Features.EmployeeProjectsActions.Queries.List;
 using AutoMapper;
 using Domain.Entities;
 using Persistance.Context;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using UnitTests.Common;
 using Xunit;
 
-namespace UnitTests.Features.Projects.Queries.ProjectsActions.List
+namespace UnitTests.Features.Projects.EmployeeProjectsActions.Queries.List
 {
     [Collection("QueryCollection")]
     public class ProjectsListForEmployeeQueryHandlerTest

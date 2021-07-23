@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.ProjectsActions.Queries.Details
+namespace Application.Features.EmployeeProjectsActions.Queries.Details
 {
     public class ProjectActionDetailsVm
     {

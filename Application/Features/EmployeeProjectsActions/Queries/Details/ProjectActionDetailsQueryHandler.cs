@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Features.ProjectsActions.Queries.Details
+namespace Application.Features.EmployeeProjectsActions.Queries.Details
 {
     public class ProjectActionDetailsQueryHandler : IRequestHandler<ProjectActionDetailsQuery, ProjectActionDetailsVm>
     {
