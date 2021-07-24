@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using UnitTests.Common;
 using Xunit;
 
-namespace UnitTests.Features.Projects.EmployeeProjectsActions.Queries.List
+namespace UnitTests.Features.EmployeeProjectsActions.Queries.List
 {
     [Collection("QueryCollection")]
     public class ProjectsListForEmployeeQueryHandlerTest

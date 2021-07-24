@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using UnitTests.Common;
 using Xunit;
 
-namespace UnitTests.Features.Projects.EmployeeProjectsActions.Commands.SendActionToCheck
+namespace UnitTests.Features.EmployeeProjectsActions.Commands.SendActionToCheck
 {
     [Collection("CommandCollection")]
     public class SendActionToCheckCommandHandlerTest
@@ -34,12 +34,12 @@ namespace UnitTests.Features.Projects.EmployeeProjectsActions.Commands.SendActio
         }
 
         [Fact]
-        public async Task ShouldUpdateAction()
+        public async Task ShouldChangeStatusToCheck()
         {
             //arrange
             var handler = new SendActionToCheckCommandHandler(_context);
-            //act
             var guid = new Guid("21b21a7e-402f-4fa0-850f-0a22f48193dd");
+            //act
             var result = await handler.Handle(new SendActionToCheckCommand() { ProjectActionId = guid },
                  cancellationToken: CancellationToken.None);
             //assert
