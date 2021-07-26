@@ -1,7 +1,5 @@
 ﻿using Application.Contracts.Identity;
-using Application.Contracts.Persistance;
-using Application.Features.ManagerProjectAction.Commands.Accept;
-using Domain.Entities;
+using Application.Features.ManagerProjectAction.Commands.UpdateProject;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Persistance.Context;
@@ -12,17 +10,17 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using UnitTests.Common;
 using Xunit;
 
-namespace UnitTests.Features.ManagerProjectAction.Commands.Accept
+namespace UnitTests.Features.ManagerProjectAction.Commands.UpdateProject
 {
     [Collection("CommandCollection")]
-    public class AcceptActionAfterCheckCommandHandlerTest
+    public class UpdateProjectCommandHandlerTest
     {
         private readonly ProjectManagerDbContext _context;
         private const string _email = "PaulAllen@email.com";
-        public AcceptActionAfterCheckCommandHandlerTest()
+
+        public UpdateProjectCommandHandlerTest()
         {
             var mockUserService = new Mock<ICurrentUserService>();
             mockUserService.Setup(x => x.Email).Returns(_email);
@@ -35,27 +33,31 @@ namespace UnitTests.Features.ManagerProjectAction.Commands.Accept
         }
 
         [Fact]
-        public async Task ShouldChangeStatusToDone()
+        public async Task ShouldUpdateProject()
         {
             //arrange
-            var handler = new AcceptActionAfterCheckCommandHandler(_context);
-            var guid = new Guid("21b21a7e-402f-4fa0-850f-0a22f48193dd");
-            var command = new AcceptActionAfterCheckCommand()
+            var handler = new UpdateProjectCommandHandler(_context);
+            var guid = new Guid("d5212365-524a-430d-ac75-14a0983edf62");
+            var title = "Updated title";
+            var desc = "Update test description";
+            var command = new UpdateProjectCommand()
             {
-                ProjectActionId = guid,
+                Title = title,
+                Description = desc,
+                ProjectId = guid,
             };
             //act
             var result = await handler.Handle(command, CancellationToken.None);
             //assert
             result.ShouldBeOfType<Guid>();
-            var action = await (from pa in _context.ProjectActions
-                                where pa.Id == guid
-                                select pa).FirstOrDefaultAsync();
-            action.Id.ShouldBe(guid);
-            action.ModifiedBy.ShouldBe(_email);
-            action.Modified.ShouldBeInRange(DateTimeOffset.Now.AddMinutes(-1), DateTimeOffset.Now);
-            action.Done.ShouldBeInRange(DateTimeOffset.Now.AddMinutes(-1), DateTimeOffset.Now);
-            action.Status.ShouldBe(ProgressStatus.Done);
+            var project = await (from p in _context.Projects
+                                 where p.Id == guid
+                                 select p).FirstOrDefaultAsync();
+            project.Title.ShouldBe(title);
+            project.Description.ShouldBe(desc);
+            project.Id.ShouldBe(guid);
+            project.ModifiedBy.ShouldBe(_email);
+            project.Modified.ShouldBeInRange(DateTimeOffset.UtcNow.AddMinutes(-1), DateTimeOffset.UtcNow);
         }
     }
 }

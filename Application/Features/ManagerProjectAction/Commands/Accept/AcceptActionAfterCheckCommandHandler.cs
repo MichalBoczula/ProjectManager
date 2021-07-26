@@ -25,9 +25,13 @@ namespace Application.Features.ManagerProjectAction.Commands.Accept
             var action = await (from pa in _context.ProjectActions
                                where request.ProjectActionId == pa.Id
                                select pa).FirstOrDefaultAsync(cancellationToken);
+
             action.Status = ProgressStatus.Done;
+            action.Done = DateTimeOffset.Now;
+
             _context.ProjectActions.Update(action);
             await _context.SaveChangesAsync(cancellationToken);
+
             return action.Id;
         }
     }

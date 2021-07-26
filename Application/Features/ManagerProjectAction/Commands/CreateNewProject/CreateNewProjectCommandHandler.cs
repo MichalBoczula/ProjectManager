@@ -24,11 +24,13 @@ namespace Application.Features.ManagerProjectAction.Commands.CreateNewProject
         {
             var mangerId = await (from m in _context.Managers
                                   where m.Email == request.Email
-                                  select m.Id).FirstOrDefaultAsync();
+                                  select m.Id).FirstOrDefaultAsync(cancellationToken);
             var project = new Project()
             {
                 Title = request.Title,
-                Description = request.Description
+                Description = request.Description,
+                StatusId = 1,
+                Status = ProjectStatus.Open
             };
             await _context.Projects.AddAsync(project);
             await _context.SaveChangesAsync(cancellationToken);

@@ -19,11 +19,12 @@ namespace UnitTests.Features.ManagerProjectAction.Commands.ToImprove
     public class SendActionToImproveCommandHandlerTest
     {
         private readonly ProjectManagerDbContext _context;
+        private const string _email = "PaulAllen@email.com";
 
         public SendActionToImproveCommandHandlerTest()
         {
             var mockUserService = new Mock<ICurrentUserService>();
-            mockUserService.Setup(x => x.Email).Returns("PaulAllen@email.com");
+            mockUserService.Setup(x => x.Email).Returns(_email);
             var options = new DbContextOptionsBuilder<ProjectManagerDbContext>()
                .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             var _contextMock = new Mock<ProjectManagerDbContext>(options, mockUserService.Object) { CallBase = true };
@@ -51,7 +52,8 @@ namespace UnitTests.Features.ManagerProjectAction.Commands.ToImprove
                                 select pa).FirstOrDefaultAsync();
             action.Status.ShouldBe(ProgressStatus.ToImprove);
             action.Feedback.ShouldBe(feedback);
-            action.ModifiedBy.ShouldBe("PaulAllen@email.com");
+            action.ModifiedBy.ShouldBe(_email);
+            action.Modified.ShouldBeInRange(DateTimeOffset.Now.AddMinutes(-1), DateTimeOffset.Now);
         }
     }
 }

@@ -9,7 +9,6 @@ namespace Domain.Entities
         public string Title { get; set; }
         public string Description { get; set; }
         public string Feedback { get; set; }
-        public DateTimeOffset Established { get; set; }
         public DateTimeOffset Done { get; set; }
         public DateTimeOffset DeadLine { get; set; }
         public Guid ProjectId { get; set; }

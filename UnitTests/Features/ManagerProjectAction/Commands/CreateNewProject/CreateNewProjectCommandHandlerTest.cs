@@ -1,5 +1,6 @@
 ﻿using Application.Contracts.Identity;
 using Application.Features.ManagerProjectAction.Commands.CreateNewProject;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Persistance.Context;
@@ -12,7 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace UnitTests.Features.EmployeeProjectsActions.Commands.CreateNewProject
+namespace UnitTests.Features.ManagerProjectAction.Commands.CreateNewProject
 {
     [Collection("CommandCollection")]
     public class CreateNewProjectCommandHandlerTest
@@ -61,6 +62,9 @@ namespace UnitTests.Features.EmployeeProjectsActions.Commands.CreateNewProject
             project.Title.ShouldBe(title);
             project.Description.ShouldBe(desc);
             project.CreatedBy.ShouldBe(_email);
+            project.StatusId.ShouldBe(1);
+            project.Status.ShouldBe(ProjectStatus.Open);
+            project.Created.ShouldBeInRange(DateTimeOffset.Now.AddMinutes(-1), DateTimeOffset.Now);
             var projectEmployeeManagerList = from pem in _context.ProjectEmployeeManagers
                                              where pem.ProjectId == result
                                              select new

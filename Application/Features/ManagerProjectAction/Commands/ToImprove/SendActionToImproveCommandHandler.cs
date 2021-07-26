@@ -25,10 +25,13 @@ namespace Application.Features.ManagerProjectAction.Commands.ToImprove
             var action = await (from pa in _context.ProjectActions
                                 where request.ProjectActionId == pa.Id
                                 select pa).FirstOrDefaultAsync(cancellationToken);
+
             action.Feedback = request.Feedback;
             action.Status = ProgressStatus.ToImprove;
+
             _context.ProjectActions.Update(action);
             await _context.SaveChangesAsync(cancellationToken);
+
             return action.Id;
         }
     }

@@ -20,11 +20,12 @@ namespace UnitTests.Features.EmployeeProjectsActions.Commands.SendActionToCheck
     public class SendActionToCheckCommandHandlerTest
     {
         private readonly ProjectManagerDbContext _context;
+        private const string _email = "TomaszNowak@email.com";
 
         public SendActionToCheckCommandHandlerTest()
         {
             var mockUserService = new Mock<ICurrentUserService>();
-            mockUserService.Setup(x => x.Email).Returns("TomaszNowak@email.com");
+            mockUserService.Setup(x => x.Email).Returns(_email);
             var options = new DbContextOptionsBuilder<ProjectManagerDbContext>()
                .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             var _contextMock = new Mock<ProjectManagerDbContext>(options, mockUserService.Object) { CallBase = true };
@@ -44,16 +45,13 @@ namespace UnitTests.Features.EmployeeProjectsActions.Commands.SendActionToCheck
                  cancellationToken: CancellationToken.None);
             //assert
             result.ShouldBeOfType<Guid>();
-            result.ShouldBe(guid);
             var action = await (from pa in _context.ProjectActions
                                 where pa.Id == guid
-                                select new
-                                {
-                                    pa.Status,
-                                    pa.ModifiedBy
-                                }).FirstOrDefaultAsync();
+                                select pa).FirstOrDefaultAsync();
+            action.Id.ShouldBe(guid);
             action.Status.ShouldBe(ProgressStatus.ToCheck);
-            action.ModifiedBy.ShouldBe("TomaszNowak@email.com");
+            action.ModifiedBy.ShouldBe(_email);
+            action.Modified.ShouldBeInRange(DateTimeOffset.Now.AddMinutes(-1), DateTimeOffset.Now);
         }
     }
 }
