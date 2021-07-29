@@ -59,5 +59,26 @@ namespace UnitTests.Features.ManagerProjectAction.Commands.UpdateProject
             project.ModifiedBy.ShouldBe(_email);
             project.Modified.ShouldBeInRange(DateTimeOffset.UtcNow.AddMinutes(-1), DateTimeOffset.UtcNow);
         }
+
+        [Fact]
+        public async Task ShouldNOTUpdateProject()
+        {
+            //arrange
+            var handler = new UpdateProjectCommandHandler(_context);
+            var guid = new Guid("d5212365-524a-430d-aaaa-14a0983edf62");
+            var title = "Updated title";
+            var desc = "Update test description";
+            var command = new UpdateProjectCommand()
+            {
+                Title = title,
+                Description = desc,
+                ProjectId = guid,
+            };
+            //act
+            var result = await handler.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBeOfType<Guid>();
+            result.ShouldBe(Guid.Empty);
+        }
     }
 }

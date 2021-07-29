@@ -24,6 +24,10 @@ namespace Application.Features.ManagerProjectAction.Commands.UpdateProject
             var project = await (from p in _context.Projects
                           where p.Id == request.ProjectId
                           select p).FirstOrDefaultAsync(cancellationToken);
+            if(project == null)
+            {
+                return Guid.Empty;
+            }
 
             project.Title = request.Title;
             project.Description = request.Description;

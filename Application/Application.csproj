@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\ManagerProjectAction\Commands\UpdateActionInProject\" />
     <Folder Include="Features\ManagerProjectAction\Queries\List\" />
     <Folder Include="Features\ManagerProjectAction\Queries\Details\" />
     <Folder Include="Features\StatisticsForManager\Queries\" />
