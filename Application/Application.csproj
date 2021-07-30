@@ -17,9 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\ManagerProjectAction\Queries\ActionDetails\" />
-    <Folder Include="Features\ManagerProjectAction\Queries\EmployeesList\" />
-    <Folder Include="Features\ManagerProjectAction\Queries\ProjectsList\" />
     <Folder Include="Features\StatisticsForManager\Queries\" />
   </ItemGroup>
 
