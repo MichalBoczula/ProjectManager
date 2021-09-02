@@ -1,4 +1,5 @@
-﻿using Application.Features.EmployeeProjectsActions.Queries.Details;
+﻿using Application.Features.EmployeeProjectsActions.Commands.SendActionToCheck;
+using Application.Features.EmployeeProjectsActions.Queries.Details;
 using Application.Features.EmployeeProjectsActions.Queries.List;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManager.API.Controllers.Common;
@@ -38,6 +39,20 @@ namespace ProjectManager.API.Controllers
             else
             {
                 return NotFound(vm);
+            }
+        }
+
+        [HttpPut("actions/{Id}")]
+        public async Task<ActionResult<ProjectActionDetailsVm>> SendActionToCheck(string Id)
+        {
+            var vm = await Mediator.Send(new SendActionToCheckCommand { ProjectActionId = Id });
+            if (vm == Guid.Empty)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return NoContent();
             }
         }
     }

@@ -10,6 +10,6 @@ namespace Application.Features.EmployeeProjectsActions.Commands.SendActionToChec
 {
     public class SendActionToCheckCommand : IRequest<Guid>
     {
-        public Guid ProjectActionId { get; set; }
+        public string ProjectActionId { get; set; }
     }
 }

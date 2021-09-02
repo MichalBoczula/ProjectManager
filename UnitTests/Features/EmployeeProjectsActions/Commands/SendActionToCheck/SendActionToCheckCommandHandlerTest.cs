@@ -39,19 +39,33 @@ namespace UnitTests.Features.EmployeeProjectsActions.Commands.SendActionToCheck
         {
             //arrange
             var handler = new SendActionToCheckCommandHandler(_context);
-            var guid = new Guid("21b21a7e-402f-4fa0-850f-0a22f48193dd");
+            var guid = "21b21a7e-402f-4fa0-850f-0a22f48193dd";
             //act
             var result = await handler.Handle(new SendActionToCheckCommand() { ProjectActionId = guid },
                  cancellationToken: CancellationToken.None);
             //assert
             result.ShouldBeOfType<Guid>();
             var action = await (from pa in _context.ProjectActions
-                                where pa.Id == guid
+                                where pa.Id == new Guid(guid)
                                 select pa).FirstOrDefaultAsync();
-            action.Id.ShouldBe(guid);
+            action.Id.ShouldBe(new Guid(guid));
             action.Status.ShouldBe(ProgressStatus.ToCheck);
             action.ModifiedBy.ShouldBe(_email);
             action.Modified.ShouldBeInRange(DateTimeOffset.Now.AddMinutes(-1), DateTimeOffset.Now);
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmptyGuid()
+        {
+            //arrange
+            var handler = new SendActionToCheckCommandHandler(_context);
+            var guid = "21b21a7e-0000-0000-850f-0a22f48193dd";
+            //act
+            var result = await handler.Handle(new SendActionToCheckCommand() { ProjectActionId = guid },
+                 cancellationToken: CancellationToken.None);
+            //assert
+            result.ShouldBeOfType<Guid>();
+            result.ShouldBe(Guid.Empty);
         }
     }
 }
