@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Application.Features.EmployeeProjectsActions.Queries.List
 {
-    public class ProjectTempVm
+    public class ProjectInformationDtoWrapper
     {
-        public Guid ProjectId { get; set; }
-        public List<ProjectActionDto> ProjectActions { get; set; }
+        public Guid Id { get; set; }
+        public ProjectInformationDto ProjectDto { get; set; }
     }
 }

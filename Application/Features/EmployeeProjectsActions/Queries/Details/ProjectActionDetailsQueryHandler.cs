@@ -24,8 +24,9 @@ namespace Application.Features.EmployeeProjectsActions.Queries.Details
 
         public async Task<ProjectActionDetailsVm> Handle(ProjectActionDetailsQuery request, CancellationToken cancellationToken)
         {
+
             var query = await (from pa in _context.ProjectActions
-                               where pa.Id == request.ProjectActionId
+                               where pa.Id == new Guid(request.ProjectActionId)
                                join m in _context.Managers
                                    on pa.ManagerId equals m.Id
                                select new
@@ -33,12 +34,20 @@ namespace Application.Features.EmployeeProjectsActions.Queries.Details
                                    pa,
                                    m
                                }).FirstOrDefaultAsync(cancellationToken);
-            var projectActionDetailsVm = new ProjectActionDetailsVm()
+
+            if (query != null)
             {
-                ManagerDto = _mapper.Map<ManagerForProjectDetailsDto>(query.m),
-                ProjectActionDto = _mapper.Map<ProjectActionDetailsDto>(query.pa)
-            };
-            return projectActionDetailsVm;
+                var projectActionDetailsVm = new ProjectActionDetailsVm()
+                {
+                    ManagerDto = _mapper.Map<ManagerForProjectDetailsDto>(query.m),
+                    ProjectActionDto = _mapper.Map<ProjectActionDetailsDto>(query.pa)
+                };
+                return projectActionDetailsVm;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

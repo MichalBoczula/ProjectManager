@@ -26,36 +26,61 @@ namespace Application.Features.EmployeeProjectsActions.Queries.List
         public async Task<List<ProjectVm>> Handle(ProjectsListForEmployeeQuery request, CancellationToken cancellationToken)
         {
 
-            var eId = from e in _context.Employees
-                      where e.Email == request.Email
-                      select e.Id;
-            var query = from pa in _context.ProjectActions.AsEnumerable()
-                        where pa.EmployeeId == eId.FirstOrDefault()
-                        group pa by pa.ProjectId into x
-                        select new
-                        {
-                            x.Key,
-                            Actions = x.ToList()
-                        };
-            var list = new List<ProjectVm>();
-            foreach (var ele in query)
+            var empIdQuery = from e in _context.Employees
+                             where e.Email == request.Email
+                             select new
+                             {
+                                 e.Id
+                             };
+            var actions = from pa in _context.ProjectActions
+                          join q in empIdQuery
+                              on pa.EmployeeId equals q.Id
+                          orderby pa.ProjectId
+                          select pa;
+
+            var projects = (from p in _context.Projects
+                            join q in actions
+                                 on p.Id equals q.ProjectId
+                            select p).Distinct();
+
+            var result = new List<ProjectVm>();
+            var proj = new List<ProjectInformationDto>();
+
+            foreach (var ele in projects)
             {
-                var projectActions = new List<ProjectActionDto>();
-                foreach (var e in ele.Actions)
+                var project = _mapper.Map<ProjectInformationDto>(ele);
+                result.Add(new ProjectVm
                 {
-                    projectActions.Add(_mapper.Map<ProjectActionDto>((ProjectAction)e));
-                }
-                var project = from p in _context.Projects
-                              where p.Id == ele.Key
-                              select p;
-                var projectVm = new ProjectVm()
-                {
-                    Project = _mapper.Map<ProjectInformationDto>(await project.FirstOrDefaultAsync()),
-                    ProjectActions = projectActions
-                };
-                list.Add(projectVm);
+                    Project = project,
+                    ProjectActions = new List<ProjectActionDto>()
+                });
             }
-            return list;
+
+            foreach (var ele in actions)
+            {
+                var actionDto = _mapper.Map<ProjectActionDto>(ele);
+                foreach (var item in result)
+                {
+                    var projectVm = new ProjectVm()
+                    {
+                        ProjectActions = new List<ProjectActionDto>()
+                    };
+                    if (ele.ProjectId == item.Project.Id)
+                    {
+                        item.ProjectActions.Add(actionDto);
+                    }
+                }
+            }
+
+            if(result.Count > 0)
+            {
+                return result;
+
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

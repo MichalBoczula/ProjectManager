@@ -50,5 +50,18 @@ namespace UnitTests.Features.EmployeeProjectsActions.Queries.List
                 }
             }
         }
+
+        [Fact]
+        public async Task ShouldReturnNull()
+        {
+            //arrange
+            var handler = new ProjectsListForEmployeeQueryHandler(_context, _mapper);
+            //act
+            var result = await handler.Handle(
+                    new ProjectsListForEmployeeQuery() { Email = "abc@email.com" },
+                    cancellationToken: CancellationToken.None);
+            //assert
+            result.ShouldBeNull();
+        }
     }
 }

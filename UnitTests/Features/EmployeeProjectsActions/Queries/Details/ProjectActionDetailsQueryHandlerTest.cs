@@ -32,7 +32,7 @@ namespace UnitTests.Features.EmployeeProjectsActions.Queries.Details
             var handler = new ProjectActionDetailsQueryHandler(_context, _mapper);
             //act
             var result = await handler.Handle(
-                    new ProjectActionDetailsQuery() { ProjectActionId = new Guid("21b21a7e-402f-4fa0-850f-0a22f48193dd") },
+                    new ProjectActionDetailsQuery() { ProjectActionId = "21b21a7e-402f-4fa0-850f-0a22f48193dd" },
                     cancellationToken: CancellationToken.None);
             //assert
             result.ShouldBeOfType<ProjectActionDetailsVm>();
@@ -44,6 +44,20 @@ namespace UnitTests.Features.EmployeeProjectsActions.Queries.Details
             result.ProjectActionDto.Established.ShouldBeOfType<DateTimeOffset>();
             result.ManagerDto.FullName.ShouldNotBeNullOrWhiteSpace();
             result.ManagerDto.Email.ShouldNotBeNullOrWhiteSpace();
+        }
+
+
+        [Fact]
+        public async Task ShouldReturnNull()
+        {
+            //arrange
+            var handler = new ProjectActionDetailsQueryHandler(_context, _mapper);
+            //act
+            var result = await handler.Handle(
+                    new ProjectActionDetailsQuery() { ProjectActionId = "21b21a7e-0000-4fa0-850f-0a22f48193dd" },
+                    cancellationToken: CancellationToken.None);
+            //assert
+            result.ShouldBeNull();
         }
     }
 }

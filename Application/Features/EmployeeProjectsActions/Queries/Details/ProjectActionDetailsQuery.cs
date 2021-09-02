@@ -9,6 +9,6 @@ namespace Application.Features.EmployeeProjectsActions.Queries.Details
 {
     public class ProjectActionDetailsQuery : IRequest<ProjectActionDetailsVm>
     {
-        public Guid ProjectActionId { get; set; }
+        public string ProjectActionId { get; set; }
     }
 }
