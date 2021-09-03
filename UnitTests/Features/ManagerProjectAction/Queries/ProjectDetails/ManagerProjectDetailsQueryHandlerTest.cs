@@ -12,15 +12,15 @@ using System.Threading.Tasks;
 using UnitTests.Common;
 using Xunit;
 
-namespace UnitTests.Features.ManagerProjectAction.Queries.ProjectList
+namespace UnitTests.Features.ManagerProjectAction.Queries.ProjectDetails
 {
     [Collection("QueryCollection")]
-    public class ProjectsListForEmployeeQueryHandlerTest
+    public class ManagerProjectDetailsQueryHandlerTest
     {
         private readonly ProjectManagerDbContext _context;
         private readonly IMapper _mapper;
 
-        public ProjectsListForEmployeeQueryHandlerTest(QueryTestBase testBase)
+        public ManagerProjectDetailsQueryHandlerTest(QueryTestBase testBase)
         {
             _context = testBase.Context;
             _mapper = testBase.Mapper;

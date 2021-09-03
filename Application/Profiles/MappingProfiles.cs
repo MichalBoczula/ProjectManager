@@ -1,6 +1,7 @@
 ﻿using Application.Features.EmployeeProjectsActions.Queries.Details;
 using Application.Features.EmployeeProjectsActions.Queries.List;
 using Application.Features.ManagerProjectAction.Queries.EmployeesList;
+using Application.Features.ManagerProjectAction.Queries.ProjectActionWithFilter;
 using Application.Features.ManagerProjectAction.Queries.ProjectDetails;
 using Application.Features.ManagerProjectAction.Queries.ProjectsList;
 using AutoMapper;
@@ -34,6 +35,9 @@ namespace Application.Profiles
                .ForMember(m => m.FullName, opt => opt.MapFrom(x => $"{x.FirstName} {x.LastName}"));
             CreateMap<Project, ProjectForManagersList>()
               .ForMember(m => m.Status, opt => opt.MapFrom(x => x.Status.ToString()));
+            CreateMap<Project, ProjectForProjectActionWithFilterDto>();
+            CreateMap<ProjectAction, ProjectActionForProjectActionWithFilterDto>()
+                .ForMember(pa => pa.Status, opt => opt.MapFrom(x => x.Status.ToString()));
         }
 
         private void CreateMapsForEmployee()

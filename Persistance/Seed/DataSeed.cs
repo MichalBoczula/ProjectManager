@@ -89,7 +89,7 @@ namespace Persistance.Seed
                       DeadLine = deadline,
                       StatusId = 1,
                       EmployeeId = firstEmployeeGuid,
-                      Status = ProgressStatus.ToDo,
+                      Status = ProgressStatus.ToCheck,
                       ManagerId = managerGuid
                   });
             modelBuilder.Entity<ProjectAction>()
