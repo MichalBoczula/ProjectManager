@@ -22,9 +22,25 @@ namespace Application.Features.ManagerProjectAction.Commands.Accept
 
         public async Task<Guid> Handle(AcceptActionAfterCheckCommand request, CancellationToken cancellationToken)
         {
+            var managerId = await (from m in _context.Managers
+                            where m.Email == request.Email
+                            select m.Id).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+
+            if(managerId == Guid.Empty)
+            {
+                return Guid.Empty;
+            }
+
             var action = await (from pa in _context.ProjectActions
-                               where request.ProjectActionId == pa.Id
-                               select pa).FirstOrDefaultAsync(cancellationToken);
+                         where new Guid(request.ProjectActionId) == pa.Id
+                               && managerId == pa.ManagerId
+                               && pa.Status == ProgressStatus.ToCheck
+                         select pa).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+
+            if (action == null)
+            { 
+                return Guid.Empty;
+            }
 
             action.Status = ProgressStatus.Done;
             action.Done = DateTimeOffset.Now;

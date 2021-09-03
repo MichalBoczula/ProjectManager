@@ -9,6 +9,7 @@ namespace Application.Features.ManagerProjectAction.Commands.Accept
 {
     public class AcceptActionAfterCheckCommand : IRequest<Guid>
     {
-        public Guid ProjectActionId { get; set; }
+        public string ProjectActionId { get; set; }
+        public string Email { get; set; }
     }
 }

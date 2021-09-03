@@ -39,23 +39,60 @@ namespace UnitTests.Features.ManagerProjectAction.Commands.Accept
         {
             //arrange
             var handler = new AcceptActionAfterCheckCommandHandler(_context);
-            var guid = new Guid("21b21a7e-402f-4fa0-850f-0a22f48193dd");
+            var guid = "21b21a7e-402f-4fa0-850f-0a22f48193dd";
             var command = new AcceptActionAfterCheckCommand()
             {
                 ProjectActionId = guid,
+                Email = "PaulAllen@email.com"
             };
             //act
             var result = await handler.Handle(command, CancellationToken.None);
             //assert
             result.ShouldBeOfType<Guid>();
             var action = await (from pa in _context.ProjectActions
-                                where pa.Id == guid
+                                where pa.Id == new Guid(guid)
                                 select pa).FirstOrDefaultAsync();
-            action.Id.ShouldBe(guid);
+            action.Id.ShouldBe(new Guid(guid));
             action.ModifiedBy.ShouldBe(_email);
             action.Modified.ShouldBeInRange(DateTimeOffset.Now.AddMinutes(-1), DateTimeOffset.Now);
             action.Done.ShouldBeInRange(DateTimeOffset.Now.AddMinutes(-1), DateTimeOffset.Now);
             action.Status.ShouldBe(ProgressStatus.Done);
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmptyGuidInvalidEmail()
+        {
+            //arrange
+            var handler = new AcceptActionAfterCheckCommandHandler(_context);
+            var guid = "21b21a7e-402f-4fa0-850f-0a22f48193dd";
+            var command = new AcceptActionAfterCheckCommand()
+            {
+                ProjectActionId = guid,
+                Email = "test@email.com"
+            };
+            //act
+            var result = await handler.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBeOfType<Guid>();
+            result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmptyGuidInvalidProjectId()
+        {
+            //arrange
+            var handler = new AcceptActionAfterCheckCommandHandler(_context);
+            var guid = "21b21a7e-0000-0000-850f-0a22f48193dd";
+            var command = new AcceptActionAfterCheckCommand()
+            {
+                ProjectActionId = guid,
+                Email = "PaulAllen@email.com"
+            };
+            //act
+            var result = await handler.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBeOfType<Guid>();
+            result.ShouldBe(Guid.Empty);
         }
     }
 }

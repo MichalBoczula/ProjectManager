@@ -1,4 +1,5 @@
-﻿using Application.Features.ManagerProjectAction.Queries.EmployeesList;
+﻿using Application.Features.ManagerProjectAction.Commands.Accept;
+using Application.Features.ManagerProjectAction.Queries.EmployeesList;
 using Application.Features.ManagerProjectAction.Queries.ProjectDetails;
 using Application.Features.ManagerProjectAction.Queries.ProjectsList;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +39,19 @@ namespace ProjectManager.API.Controllers
             var vm = await Mediator.Send(new ManagerProjectDetailsQuery() { Email = Email, ProjectId = Id });
             return vm != null ?
                 Ok(vm) :
+                NotFound(vm);
+        }
+
+        [HttpPut("actions/{Email}/{Id}")]
+        public async Task<ActionResult<ProjectDetailsForManagersVm>> CheckAction (
+            string Email,
+            string Id,
+            [FromBody] bool isAccepted,
+            [FromBody] string desc)
+        {
+            var vm = await Mediator.Send(new AcceptActionAfterCheckCommand() { Email = Email, ProjectActionId = Id });
+            return vm != Guid.Empty ?
+                NoContent() :
                 NotFound(vm);
         }
     }
