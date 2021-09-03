@@ -24,23 +24,29 @@ namespace Application.Features.ManagerProjectAction.Queries.ProjectsList
 
         public async Task<List<ProjectForManagersList>> Handle(ProjectListForManagerQuery request, CancellationToken cancellationToken)
         {
-            var managerId = await (from m in _context.Managers
-                                   where m.Email == request.Email
-                                   select m.Id).FirstOrDefaultAsync(cancellationToken);
-            var projectIds = await (from pem in _context.ProjectEmployeeManagers
-                               where pem.ManagerId == managerId
-                               select pem.ProjectId).ToListAsync(cancellationToken);
+            var managerId = from m in _context.Managers
+                            where m.Email == request.Email
+                            select m.Id;
+
+            var projectIds = (from pem in _context.ProjectEmployeeManagers
+                              join mId in managerId
+                                 on pem.ManagerId equals mId
+                              select pem.ProjectId).Distinct();
+
             var projects = from p in _context.Projects
-                           where projectIds.Contains(p.Id)
+                           join pIds in projectIds
+                               on p.Id equals pIds
                            select p;
 
             var result = new List<ProjectForManagersList>();
-            foreach(var project in await projects.ToListAsync())
+            foreach (var project in await projects.ToListAsync())
             {
                 result.Add(_mapper.Map<ProjectForManagersList>(project));
             }
 
-            return result;
+            return result.Count > 0 ? 
+                result : 
+                null;
         }
     }
 }

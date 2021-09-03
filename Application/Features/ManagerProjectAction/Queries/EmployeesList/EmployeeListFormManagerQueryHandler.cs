@@ -24,6 +24,15 @@ namespace Application.Features.ManagerProjectAction.Queries.EmployeesList
 
         public async Task<List<EmployeeForManagerVm>> Handle(EmployeeListFormManagerQuery request, CancellationToken cancellationToken)
         {
+            var manager = from m in _context.Managers
+                          where request.Email == m.Email
+                          select m.Id;
+
+            if(await manager.FirstOrDefaultAsync(cancellationToken: cancellationToken) == Guid.Empty)
+            {
+                return null;
+            }
+
             var employees = from e in _context.Employees
                             select e;
 

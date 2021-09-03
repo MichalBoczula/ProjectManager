@@ -36,6 +36,7 @@ namespace UnitTests.Features.ManagerProjectAction.Queries.ProjectsList
                 CancellationToken.None);
             //assert
             result.ShouldBeOfType<List<ProjectForManagersList>>();
+            result.Count.ShouldBeGreaterThan<int>(0);
             foreach (var ele in result)
             {
                 ele.Description.ShouldBeOfType<string>();
@@ -45,6 +46,19 @@ namespace UnitTests.Features.ManagerProjectAction.Queries.ProjectsList
                 ele.Status.ShouldBeOfType<string>();
                 ele.Status.ShouldNotBeNullOrWhiteSpace();
             }
+        }
+
+        [Fact]
+        public async Task ShouldReturnNull()
+        {
+            //arange
+            var handler = new ProjectListForManagerQueryHandler(_context, _mapper);
+            //act
+            var result = await handler.Handle(
+                new ProjectListForManagerQuery() { Email = "test@email.com" },
+                CancellationToken.None);
+            //assert
+            result.ShouldBeNull();
         }
     }
 }

@@ -9,6 +9,7 @@ namespace Application.Features.ManagerProjectAction.Queries.ProjectDetails
 {
     public class ManagerProjectDetailsQuery : IRequest<ProjectDetailsForManagersVm>
     {
-        public Guid ProjectId { get; set; }
+        public string ProjectId { get; set; }
+        public string Email { get; set; }
     }
 }

@@ -31,16 +31,33 @@ namespace UnitTests.Features.ManagerProjectAction.Queries.EmployeesList
             //arrange
             var handler = new EmployeeListFormManagerQueryHandler(_context, _mapper);
             //act
-            var result = await handler.Handle(new EmployeeListFormManagerQuery(), CancellationToken.None);
+            var result = await handler.Handle(new EmployeeListFormManagerQuery()
+            {
+                Email = "PaulAllen@email.com"
+            }, CancellationToken.None);
             //assert
             result.ShouldBeOfType<List<EmployeeForManagerVm>>();
-            foreach(var emp in result)
+            foreach (var emp in result)
             {
                 emp.FullName.ShouldBeOfType<string>();
                 emp.FullName.ShouldNotBeNullOrWhiteSpace();
                 emp.Email.ShouldBeOfType<string>();
                 emp.Email.ShouldNotBeNullOrWhiteSpace();
             }
+        }
+
+        [Fact]
+        public async Task ShouldReturnNull()
+        {
+            //arrange
+            var handler = new EmployeeListFormManagerQueryHandler(_context, _mapper);
+            //act
+            var result = await handler.Handle(new EmployeeListFormManagerQuery()
+            {
+                Email = "test@email.com"
+            }, CancellationToken.None);
+            //assert
+            result.ShouldBeNull();
         }
     }
 }

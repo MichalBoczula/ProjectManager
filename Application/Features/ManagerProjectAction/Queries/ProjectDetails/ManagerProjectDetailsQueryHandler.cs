@@ -24,12 +24,21 @@ namespace Application.Features.ManagerProjectAction.Queries.ProjectDetails
 
         public async Task<ProjectDetailsForManagersVm> Handle(ManagerProjectDetailsQuery request, CancellationToken cancellationToken)
         {
+            var managerId = from m in _context.Managers
+                            where m.Email == request.Email
+                            select m.Id;
+
+            if(await managerId.FirstOrDefaultAsync(cancellationToken: cancellationToken) == Guid.Empty)
+            {
+                return null;
+            }
+
             var project = from p in _context.Projects
-                          where p.Id == request.ProjectId
+                          where p.Id == new Guid(request.ProjectId)
                           select p;
 
             var actionsAndEmployee = from pa in _context.ProjectActions
-                                     where request.ProjectId == pa.ProjectId
+                                     where new Guid(request.ProjectId) == pa.ProjectId
                                      join e in _context.Employees
                                           on pa.EmployeeId equals e.Id
                                      select new
@@ -50,7 +59,9 @@ namespace Application.Features.ManagerProjectAction.Queries.ProjectDetails
                 result.ProjectActions.Add(action);
             }
 
-            return result;
+            return result.ProjectActions.Count > 0 ?
+                result :
+                null;
         }
     }
 }

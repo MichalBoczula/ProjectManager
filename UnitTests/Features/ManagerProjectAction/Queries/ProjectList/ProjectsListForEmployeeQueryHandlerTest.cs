@@ -31,9 +31,16 @@ namespace UnitTests.Features.ManagerProjectAction.Queries.ProjectList
         {
             //arange
             var handler = new ManagerProjectDetailsQueryHandler(_context, _mapper);
-            var firstProjectGuid = new Guid("d5212365-524a-430d-ac75-14a0983edf62");
+            var firstProjectGuid = "d5212365-524a-430d-ac75-14a0983edf62";
+            var Email = "PaulAllen@email.com";
             //act
-            var result = await handler.Handle(new ManagerProjectDetailsQuery() { ProjectId = firstProjectGuid }, CancellationToken.None);
+            var result = await handler.Handle(
+                new ManagerProjectDetailsQuery() 
+                { 
+                    ProjectId = firstProjectGuid,
+                    Email = Email 
+                },
+                CancellationToken.None);
             //assert
             result.ShouldBeOfType<ProjectDetailsForManagersVm>();
             foreach(var ele in result.ProjectActions)
@@ -50,6 +57,44 @@ namespace UnitTests.Features.ManagerProjectAction.Queries.ProjectList
                 ele.Employee.Email.ShouldBeOfType<string>();
                 ele.Employee.Email.ShouldNotBeNullOrWhiteSpace();
             }
+        }
+
+        [Fact]
+        public async Task ShouldReturnNullInvalidEmail()
+        {
+            //arange
+            var handler = new ManagerProjectDetailsQueryHandler(_context, _mapper);
+            var firstProjectGuid = "d5212365-524a-430d-ac75-14a0983edf62";
+            var Email = "test@email.com";
+            //act
+            var result = await handler.Handle(
+                new ManagerProjectDetailsQuery()
+                {
+                    ProjectId = firstProjectGuid,
+                    Email = Email
+                },
+                CancellationToken.None);
+            //assert
+            result.ShouldBeNull();
+        }
+
+        [Fact]
+        public async Task ShouldReturnNullInvalidProjectId()
+        {
+            //arange
+            var handler = new ManagerProjectDetailsQueryHandler(_context, _mapper);
+            var firstProjectGuid = "d5212365-0000-0000-ac75-14a0983edf62";
+            var Email = "PaulAllen@email.com";
+            //act
+            var result = await handler.Handle(
+                new ManagerProjectDetailsQuery()
+                {
+                    ProjectId = firstProjectGuid,
+                    Email = Email
+                },
+                CancellationToken.None);
+            //assert
+            result.ShouldBeNull();
         }
     }
 }

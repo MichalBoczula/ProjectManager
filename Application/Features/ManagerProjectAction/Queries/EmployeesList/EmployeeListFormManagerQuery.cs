@@ -9,6 +9,6 @@ namespace Application.Features.ManagerProjectAction.Queries.EmployeesList
 {
     public class EmployeeListFormManagerQuery : IRequest<List<EmployeeForManagerVm>>
     {
-
+        public string Email { get; set; }
     }
 }
