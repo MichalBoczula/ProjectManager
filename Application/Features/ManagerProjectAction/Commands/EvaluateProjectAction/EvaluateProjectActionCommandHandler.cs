@@ -31,8 +31,16 @@ namespace Application.Features.ManagerProjectAction.Commands.EvaluateProjectActi
                 return Guid.Empty;
             }
 
+            Guid guid;
+            var tryParseGuid = Guid.TryParse(request.ProjectActionId, out guid);
+
+            if(!tryParseGuid)
+            {
+                return Guid.Empty;
+            }
+
             var project = await (from pa in _context.ProjectActions
-                                 where pa.Id == new Guid(request.ProjectActionId)
+                                 where pa.Id == guid
                                     && pa.ManagerId == managerId
                                     && pa.Status == ProgressStatus.ToCheck
                                  select pa).FirstOrDefaultAsync(cancellationToken: cancellationToken);

@@ -16,12 +16,12 @@ using Xunit;
 namespace UnitTests.Features.ManagerProjectAction.Commands.EvaluateProjectAction
 {
     [Collection("CommandCollection")]
-    public class EvaluateProjectActionQueryHandlerTests
+    public class EvaluateProjectActionCommandHandlerTests
     {
         private readonly ProjectManagerDbContext _context;
         private const string _email = "PaulAllen@email.com";
 
-        public EvaluateProjectActionQueryHandlerTests()
+        public EvaluateProjectActionCommandHandlerTests()
         {
             var mockUserService = new Mock<ICurrentUserService>();
             mockUserService.Setup(x => x.Email).Returns(_email);
@@ -133,6 +133,26 @@ namespace UnitTests.Features.ManagerProjectAction.Commands.EvaluateProjectAction
             //arrange
             var handler = new EvaluateProjectActionCommandHandler(_context);
             var testId = "21b21a7e-402f-4fa0-850f-0a22f48193dd";
+            var feedback = "some mistakes";
+            var command = new EvaluateProjectActionCommand()
+            {
+                Email = _email,
+                IsAccepted = null,
+                ProjectActionId = testId,
+                Feedback = feedback
+            };
+            //act
+            var result = await handler.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmptyGuidInvalidGuid()
+        {
+            //arrange
+            var handler = new EvaluateProjectActionCommandHandler(_context);
+            var testId = "aaaaa";
             var feedback = "some mistakes";
             var command = new EvaluateProjectActionCommand()
             {

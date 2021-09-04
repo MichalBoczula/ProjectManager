@@ -1,9 +1,11 @@
 ﻿using Application.Features.ManagerProjectAction.Commands.Accept;
+using Application.Features.ManagerProjectAction.Commands.EvaluateProjectAction;
 using Application.Features.ManagerProjectAction.Queries.EmployeesList;
 using Application.Features.ManagerProjectAction.Queries.ProjectActionWithFilter;
 using Application.Features.ManagerProjectAction.Queries.ProjectDetails;
 using Application.Features.ManagerProjectAction.Queries.ProjectsList;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using ProjectManager.API.Controllers.Common;
 using System;
 using System.Collections.Generic;
@@ -65,17 +67,22 @@ namespace ProjectManager.API.Controllers
                 NotFound(vm);
         }
 
-        //[HttpPut("actions/{Email}/{Id}")]
-        //public async Task<ActionResult<ProjectDetailsForManagersVm>> CheckAction (
-        //    string Email,
-        //    string Id,
-        //    [FromBody] bool isAccepted,
-        //    [FromBody] string desc)
-        //{
-        //    var vm = await Mediator.Send(new AcceptActionAfterCheckCommand() { Email = Email, ProjectActionId = Id });
-        //    return vm != Guid.Empty ?
-        //        NoContent() :
-        //        NotFound(vm);
-        //}
+        [HttpPut("actions/{Email}/{Id}")]
+        public async Task<ActionResult<ProjectDetailsForManagersVm>> CheckAction(
+            string Email,
+            string Id,
+            EvaluateProjectActionDto data)
+        {
+            var vm = await Mediator.Send(new EvaluateProjectActionCommand()
+            {
+                Email = Email,
+                ProjectActionId = Id,
+                IsAccepted = data.IsAccepted,
+                Feedback = data.Feedback
+            }); ;
+            return vm != Guid.Empty ?
+                NoContent() :
+                NotFound(vm);
+        }
     }
 }
