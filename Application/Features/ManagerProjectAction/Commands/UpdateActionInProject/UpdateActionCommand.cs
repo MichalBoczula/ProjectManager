@@ -12,6 +12,6 @@ namespace Application.Features.ManagerProjectAction.Commands.UpdateActionInProje
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public DateTimeOffset DeadLine { get; set; }
+        public DateTimeOffset? DeadLine { get; set; }
     }
 }

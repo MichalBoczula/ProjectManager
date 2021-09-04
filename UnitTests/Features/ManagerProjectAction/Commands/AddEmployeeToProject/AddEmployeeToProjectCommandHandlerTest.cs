@@ -57,7 +57,7 @@ namespace UnitTests.Features.ManagerProjectAction.Commands.AddEmployeeToProject
         }
 
         [Fact]
-        public async Task ShoulNOTdAddEmployeeToProject()
+        public async Task ShoulNOTAddEmployeeToProject()
         {
             //arrange
             var handle = new AddEmployeeToProjectCommandHandler(_context);

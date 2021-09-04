@@ -25,11 +25,13 @@ namespace Application.Features.ManagerProjectAction.Commands.AddEmployeeToProjec
             var managerId = await (from m in _context.Managers
                                    where m.Email == request.Email
                                    select m.Id).FirstOrDefaultAsync(cancellationToken);
+
             var project = await (from pem in _context.ProjectEmployeeManagers
                                  where pem.EmployeeId == request.EmployeeId
                                  && pem.ManagerId == managerId
                                  && pem.ProjectId == request.ProjectId
                                  select pem).FirstOrDefaultAsync(cancellationToken);
+
             if(project == null)
             {
                 var pem = new ProjectEmployeeManager()

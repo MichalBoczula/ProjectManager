@@ -25,11 +25,13 @@ namespace Application.Features.ManagerProjectAction.Commands.RemoveEmployeeFromP
             var managerId = await (from m in _context.Managers
                                    where m.Email == request.Email
                                    select m.Id).FirstOrDefaultAsync(cancellationToken);
+
             var project = await (from pem in _context.ProjectEmployeeManagers
                                  where pem.EmployeeId == request.EmployeeId
-                                 && pem.ManagerId == managerId
-                                 && pem.ProjectId == request.ProjectId
+                                     && pem.ManagerId == managerId
+                                     && pem.ProjectId == request.ProjectId
                                  select pem).FirstOrDefaultAsync(cancellationToken);
+
             if (project == null)
             {
                 return null;
@@ -38,8 +40,10 @@ namespace Application.Features.ManagerProjectAction.Commands.RemoveEmployeeFromP
             {
                 var actions = await (from pa in _context.ProjectActions
                                      where pa.EmployeeId == request.EmployeeId
-                                     && pa.ProjectId == request.ProjectId
+                                        && pa.ManagerId == managerId
+                                        && pa.ProjectId == request.ProjectId
                                      select pa).ToListAsync(cancellationToken);
+
                 foreach (var ele in actions)
                 {
                     ele.EmployeeId = Guid.Empty;
@@ -47,8 +51,10 @@ namespace Application.Features.ManagerProjectAction.Commands.RemoveEmployeeFromP
                     _context.ProjectActions.Update(ele);
                     await _context.SaveChangesAsync(cancellationToken);
                 }
+
                 _context.ProjectEmployeeManagers.Remove(project);
                 await _context.SaveChangesAsync(cancellationToken);
+
                 return project;
             }
         }
