@@ -34,7 +34,6 @@ namespace UnitTests.Features.ManagerProjectAction.Queries.ProjectActionWithFilte
             //act
             var result = await handler.Handle(new ProjectActionWithFilterQuery()
             {
-                ActionStatus = ProgressStatus.ToDo.ToString(),
                 ActionName = "Dom",
                 Email = "PaulAllen@email.com",
                 Skip = 0,
@@ -92,7 +91,7 @@ namespace UnitTests.Features.ManagerProjectAction.Queries.ProjectActionWithFilte
         }
 
         [Fact]
-        public async Task ShouldReturnTenRecordsInList()
+        public async Task ShouldReturnTenActionsInList()
         {
             //arrange
             var handler = new ProjectActionWithFilterQueryHandler(_context, _mapper);
@@ -103,7 +102,12 @@ namespace UnitTests.Features.ManagerProjectAction.Queries.ProjectActionWithFilte
             }, CancellationToken.None);
             //assert
             result.ShouldBeOfType<List<ProjectActionWithFilterVm>>();
-            result.Count.ShouldBe(10);
+            int sum = 0;
+            foreach (var ele in result)
+            {
+                sum += ele.ProjectActions.Count();
+            }
+            sum.ShouldBe(10);
             foreach (var projAction in result)
             {
                 projAction.Project.Id.ShouldBeOfType<Guid>();
@@ -120,7 +124,7 @@ namespace UnitTests.Features.ManagerProjectAction.Queries.ProjectActionWithFilte
         }
 
         [Fact]
-        public async Task ShouldReturnAllRecords()
+        public async Task ShouldReturnTwelveRecords()
         {
             //arrange
             var handler = new ProjectActionWithFilterQueryHandler(_context, _mapper);
@@ -128,11 +132,16 @@ namespace UnitTests.Features.ManagerProjectAction.Queries.ProjectActionWithFilte
             var result = await handler.Handle(new ProjectActionWithFilterQuery()
             {
                 Email = "PaulAllen@email.com",
-                Take = 0
+                Take = 12
             }, CancellationToken.None);
             //assert
             result.ShouldBeOfType<List<ProjectActionWithFilterVm>>();
-            result.Count.ShouldBe(12);
+            int sum = 0;
+            foreach (var ele in result)
+            {
+                sum += ele.ProjectActions.Count();
+            }
+            sum.ShouldBe(12);
             foreach (var projAction in result)
             {
                 projAction.Project.Id.ShouldBeOfType<Guid>();
@@ -162,7 +171,12 @@ namespace UnitTests.Features.ManagerProjectAction.Queries.ProjectActionWithFilte
             }, CancellationToken.None);
             //assert
             result.ShouldBeOfType<List<ProjectActionWithFilterVm>>();
-            result.Count.ShouldBe(7);
+            int sum = 0;
+            foreach(var ele in result)
+            {
+                sum += ele.ProjectActions.Count();
+            }
+            sum.ShouldBe(7);
             foreach (var projAction in result)
             {
                 projAction.Project.Id.ShouldBeOfType<Guid>();
@@ -187,12 +201,17 @@ namespace UnitTests.Features.ManagerProjectAction.Queries.ProjectActionWithFilte
             var result = await handler.Handle(new ProjectActionWithFilterQuery()
             {
                 Email = "PaulAllen@email.com",
-                Take = 0,
+                Take = 5,
                 Skip = 5
             }, CancellationToken.None);
             //assert
             result.ShouldBeOfType<List<ProjectActionWithFilterVm>>();
-            result.Count.ShouldBe(7);
+            int sum = 0;
+            foreach (var ele in result)
+            {
+                sum += ele.ProjectActions.Count();
+            }
+            sum.ShouldBe(5);
             foreach (var projAction in result)
             {
                 projAction.Project.Id.ShouldBeOfType<Guid>();

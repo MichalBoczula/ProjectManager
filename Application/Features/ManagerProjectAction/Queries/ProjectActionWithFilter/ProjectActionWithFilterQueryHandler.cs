@@ -1,5 +1,6 @@
 ﻿using Application.Contracts.Persistance;
 using AutoMapper;
+using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -37,11 +38,19 @@ namespace Application.Features.ManagerProjectAction.Queries.ProjectActionWithFil
                         where pa.ManagerId == managerId
                         select pa;
 
+            var s = (from q in query
+                     select q.Status.ToString().ToLower()).Distinct().ToList();
+
             if (!String.IsNullOrWhiteSpace(request.ActionStatus))
             {
-                query = from q in query
-                        where request.ActionStatus == q.Status.ToString()
-                        select q;
+                var status = CheckStatusAndMapToProgressStatusEnum(request.ActionStatus);
+
+                if (status.Item2)
+                {
+                    query = from q in query
+                            where status.Item1 == q.Status
+                            select q;
+                }
             }
 
             if (!String.IsNullOrWhiteSpace(request.ActionName))
@@ -51,7 +60,7 @@ namespace Application.Features.ManagerProjectAction.Queries.ProjectActionWithFil
                         select q;
             }
 
-            if(request.Skip > 0)
+            if (request.Skip > 0)
             {
                 query = (from q in query
                          select q).Skip(request.Skip);
@@ -62,14 +71,18 @@ namespace Application.Features.ManagerProjectAction.Queries.ProjectActionWithFil
                 query = (from q in query
                          select q).Take(request.Take);
             }
+            else
+            {
+                query = (from q in query
+                         select q).Take(10);
+            }
 
-            var projects = from q in query
-                           join p in _context.Projects
-                                on q.ProjectId equals p.Id
-                           select p;
+            var projects = (from q in query
+                            join p in _context.Projects
+                                 on q.ProjectId equals p.Id
+                            select p).Distinct();
 
             var result = new List<ProjectActionWithFilterVm>();
-
 
             foreach (var proj in projects)
             {
@@ -93,6 +106,40 @@ namespace Application.Features.ManagerProjectAction.Queries.ProjectActionWithFil
             }
 
             return result;
+        }
+
+        private Tuple<ProgressStatus, bool> CheckStatusAndMapToProgressStatusEnum(string actionStatus)
+        {
+            ProgressStatus status = ProgressStatus.ToDo;
+            bool flag = true;
+            switch (actionStatus.ToLower())
+            {
+                case "todo":
+                    {
+                        status = ProgressStatus.ToDo;
+                        break;
+                    }
+                case "tocheck":
+                    {
+                        status = ProgressStatus.ToCheck;
+                        break;
+                    }
+                case "toimprove":
+                    {
+                        status = ProgressStatus.ToImprove;
+                        break;
+                    }
+                case "done":
+                    {
+                        status = ProgressStatus.Done;
+                        break;
+                    }
+                default:
+                    flag = false;
+                    break;
+            }
+
+            return Tuple.Create(status, flag);
         }
     }
 }

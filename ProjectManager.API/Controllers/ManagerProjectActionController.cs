@@ -1,5 +1,6 @@
 ﻿using Application.Features.ManagerProjectAction.Commands.Accept;
 using Application.Features.ManagerProjectAction.Queries.EmployeesList;
+using Application.Features.ManagerProjectAction.Queries.ProjectActionWithFilter;
 using Application.Features.ManagerProjectAction.Queries.ProjectDetails;
 using Application.Features.ManagerProjectAction.Queries.ProjectsList;
 using Microsoft.AspNetCore.Mvc;
@@ -42,17 +43,39 @@ namespace ProjectManager.API.Controllers
                 NotFound(vm);
         }
 
-        [HttpPut("actions/{Email}/{Id}")]
-        public async Task<ActionResult<ProjectDetailsForManagersVm>> CheckAction (
+        [HttpGet("projects/{Email}/actions")]
+        public async Task<ActionResult<List<ProjectActionWithFilterVm>>> GetActions(
             string Email,
-            string Id,
-            [FromBody] bool isAccepted,
-            [FromBody] string desc)
+            [FromQuery] string ActionName,
+            [FromQuery] string ActionStatus,
+            [FromQuery] int Skip,
+            [FromQuery] int Take)
         {
-            var vm = await Mediator.Send(new AcceptActionAfterCheckCommand() { Email = Email, ProjectActionId = Id });
-            return vm != Guid.Empty ?
-                NoContent() :
+
+            var vm = await Mediator.Send(new ProjectActionWithFilterQuery() 
+            { 
+                Email = Email,
+                ActionName = ActionName,
+                ActionStatus = ActionStatus,
+                Skip = Skip,
+                Take = Take
+            });
+            return vm != null ?
+                Ok(vm) :
                 NotFound(vm);
         }
+
+        //[HttpPut("actions/{Email}/{Id}")]
+        //public async Task<ActionResult<ProjectDetailsForManagersVm>> CheckAction (
+        //    string Email,
+        //    string Id,
+        //    [FromBody] bool isAccepted,
+        //    [FromBody] string desc)
+        //{
+        //    var vm = await Mediator.Send(new AcceptActionAfterCheckCommand() { Email = Email, ProjectActionId = Id });
+        //    return vm != Guid.Empty ?
+        //        NoContent() :
+        //        NotFound(vm);
+        //}
     }
 }
