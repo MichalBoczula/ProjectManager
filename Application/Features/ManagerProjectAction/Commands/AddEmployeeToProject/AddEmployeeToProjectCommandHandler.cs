@@ -26,23 +26,57 @@ namespace Application.Features.ManagerProjectAction.Commands.AddEmployeeToProjec
                                    where m.Email == request.Email
                                    select m.Id).FirstOrDefaultAsync(cancellationToken);
 
-            var project = await (from pem in _context.ProjectEmployeeManagers
-                                 where pem.EmployeeId == request.EmployeeId
-                                 && pem.ManagerId == managerId
-                                 && pem.ProjectId == request.ProjectId
-                                 select pem).FirstOrDefaultAsync(cancellationToken);
+            if (managerId == Guid.Empty)
+            {
+                return null;
+            }
 
-            if(project == null)
+            if (!Guid.TryParse(request.EmployeeId, out Guid empId))
+            {
+                return null;
+            }
+
+            if (!Guid.TryParse(request.ProjectId, out Guid projId))
+            {
+                return null;
+            }
+
+            var checkProjExists = await (from p in _context.Projects
+                                         where p.Id == projId
+                                         select p).FirstOrDefaultAsync(cancellationToken);
+
+            if (checkProjExists == null)
+            {
+                return null;
+            }
+
+            var checkEmpExists = await (from e in _context.Employees
+                                        where e.Id == empId
+                                        select e).FirstOrDefaultAsync(cancellationToken);
+
+            if (checkEmpExists == null)
+            {
+                return null;
+            }
+
+            var projectEmployeeManager = await (from pem in _context.ProjectEmployeeManagers
+                                                where pem.EmployeeId == empId
+                                                    && pem.ProjectId == projId
+                                                select pem).FirstOrDefaultAsync(cancellationToken);
+
+            if (projectEmployeeManager == null)
             {
                 var pem = new ProjectEmployeeManager()
                 {
-                    ProjectId = request.ProjectId,
-                    EmployeeId = request.EmployeeId,
+                    ProjectId = projId,
+                    EmployeeId = empId,
                     ManagerId = managerId
                 };
-                await _context.ProjectEmployeeManagers.AddAsync(pem);
+
+                await _context.ProjectEmployeeManagers.AddAsync(pem, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
                 return pem;
-            }  
+            }
             else
             {
                 return null;

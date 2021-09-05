@@ -1,4 +1,4 @@
-﻿using Application.Features.ManagerProjectAction.Commands.Accept;
+﻿using Application.Features.ManagerProjectAction.Commands.AddEmployeeToProject;
 using Application.Features.ManagerProjectAction.Commands.EvaluateProjectAction;
 using Application.Features.ManagerProjectAction.Queries.EmployeesList;
 using Application.Features.ManagerProjectAction.Queries.ProjectActionWithFilter;
@@ -84,5 +84,24 @@ namespace ProjectManager.API.Controllers
                 NoContent() :
                 NotFound(vm);
         }
+
+        [HttpPost("projects/{Email}/{ProjId}")]
+        public async Task<ActionResult<ProjectDetailsForManagersVm>> AddEmployeeToProject(
+            string Email,
+            string ProjId,
+            AddEmployeeToProjectDto data)
+        {
+            var vm = await Mediator.Send(new AddEmployeeToProjectCommand()
+            {
+                Email = Email,
+                ProjectId = ProjId,
+                EmployeeId = data.EmployeeId
+            });
+            return vm != null ?
+                NoContent() :
+                NotFound();
+        }
+
+
     }
 }
