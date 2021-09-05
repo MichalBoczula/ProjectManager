@@ -33,64 +33,142 @@ namespace UnitTests.Features.ManagerProjectAction.Commands.ChangeEmployeeInProje
         }
 
         [Fact]
-        public async Task ShouldChangeEmployee()
+        public async Task ShouldRetrunEmptyGuidInvalidEmail()
         {
             //arrange
             var handler = new ChangeEmployeeInProjectActionCommandHandler(_context);
-            var actionId = new Guid("21b21a7e-402f-4fa0-850f-0a22f48193dd");
-            var empId = new Guid("7c2cc216-d5cc-4062-97ca-e326e590e9f9");
+            var actionId = "21b21a7e-402f-4fa0-850f-0a22f48193dd";
+            var empId = "7c2cc216-d5cc-4062-97ca-e326e590e9f9";
             var command = new ChangeEmployeeInProjectActionCommand()
             {
                 ActionId = actionId,
-                EmployeeId = empId
+                EmployeeId = empId,
+                Email = "test@email.com"
             };
             //act
             var result = await handler.Handle(command, CancellationToken.None);
             //assert
-            result.ShouldBeOfType<Guid>();
-            result.ShouldBe(actionId);
-            var actionEmpId = await (from pa in _context.ProjectActions
-                                where pa.Id == actionId
-                                select pa.EmployeeId).FirstOrDefaultAsync();
-            actionEmpId.ShouldBe(empId);
-        }
-
-        [Fact]
-        public async Task ShouldNOTChangeEmployeeWrongEmployeeId()
-        {
-            //arrange
-            var handler = new ChangeEmployeeInProjectActionCommandHandler(_context);
-            var actionId = new Guid("21b21a7e-402f-4fa0-850f-0a22f48193dd");
-            var empId = new Guid("7c2cc216-d5cc-4062-aaaa-e326e590e9f9");
-            var command = new ChangeEmployeeInProjectActionCommand()
-            {
-                ActionId = actionId,
-                EmployeeId = empId
-            };
-            //act
-            var result = await handler.Handle(command, CancellationToken.None);
-            //assert
-            result.ShouldBeOfType<Guid>();
             result.ShouldBe(Guid.Empty);
         }
 
         [Fact]
-        public async Task ShouldNOTChangeEmployeeWrongActionId()
+        public async Task ShouldRetrunEmptyGuidInvalidActionId()
         {
             //arrange
             var handler = new ChangeEmployeeInProjectActionCommandHandler(_context);
-            var actionId = new Guid("21b21a7e-402f-4fa0-aaaa-0a22f48193dd");
-            var empId = new Guid("7c2cc216-d5cc-4062-97ca-e326e590e9f9");
+            var actionId = "aaaaa";
+            var empId = "7c2cc216-d5cc-4062-97ca-e326e590e9f9";
             var command = new ChangeEmployeeInProjectActionCommand()
             {
                 ActionId = actionId,
-                EmployeeId = empId
+                EmployeeId = empId,
+                Email = _email
             };
             //act
             var result = await handler.Handle(command, CancellationToken.None);
             //assert
-            result.ShouldBeOfType<Guid>();
             result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
+        public async Task ShouldRetrunEmptyGuidInvalidEmployeeId()
+        {
+            //arrange
+            var handler = new ChangeEmployeeInProjectActionCommandHandler(_context);
+            var actionId = "21b21a7e-402f-4fa0-850f-0a22f48193dd";
+            var empId = "aaaaa";
+            var command = new ChangeEmployeeInProjectActionCommand()
+            {
+                ActionId = actionId,
+                EmployeeId = empId,
+                Email = _email
+            };
+            //act
+            var result = await handler.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
+        public async Task ShouldRetrunEmptyGuidActionDoesntExist()
+        {
+            //arrange
+            var handler = new ChangeEmployeeInProjectActionCommandHandler(_context);
+            var actionId = "21b21a7e-0000-4fa0-850f-0a22f48193dd";
+            var empId = "7c2cc216-d5cc-4062-97ca-e326e590e9f9";
+            var command = new ChangeEmployeeInProjectActionCommand()
+            {
+                ActionId = actionId,
+                EmployeeId = empId,
+                Email = _email
+            };
+            //act
+            var result = await handler.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
+        public async Task ShouldRetrunEmptyGuidEmployeeDoesntExist()
+        {
+            //arrange
+            var handler = new ChangeEmployeeInProjectActionCommandHandler(_context);
+            var actionId = "21b21a7e-402f-4fa0-850f-0a22f48193dd";
+            var empId = "7c2cc216-0000-4062-97ca-e326e590e9f9";
+            var command = new ChangeEmployeeInProjectActionCommand()
+            {
+                ActionId = actionId,
+                EmployeeId = empId,
+                Email = _email
+            };
+            //act
+            var result = await handler.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmptyGuidEmployeeHasntAssignedToProject()
+        {
+            //arrange
+            var handler = new ChangeEmployeeInProjectActionCommandHandler(_context);
+            var actionId = "21b21a7e-402f-4fa0-850f-0a22f48193dd";
+            var empId = "7c2cc216-d5cc-4062-97ca-e326e590e9f9";
+            var command = new ChangeEmployeeInProjectActionCommand()
+            {
+                ActionId = actionId,
+                EmployeeId = empId,
+                Email = _email
+            };
+            //act
+            var result = await handler.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
+        public async Task ShouldChangeInAction()
+        {
+            //arrange
+            var handler = new ChangeEmployeeInProjectActionCommandHandler(_context);
+            var actionId = "21b21a7e-402f-4fa0-850f-0a22f48193dd";
+            var empId = "c01423b5-9980-4210-92df-3a2fcbf5b664";
+            var command = new ChangeEmployeeInProjectActionCommand()
+            {
+                ActionId = actionId,
+                EmployeeId = empId,
+                Email = _email
+            };
+            //act
+            var result = await handler.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBe(new Guid(actionId));
+            var query = await (from pa in _context.ProjectActions
+                               where pa.Id == new Guid(actionId)
+                               select pa).FirstOrDefaultAsync(CancellationToken.None);
+            query.EmployeeId.ShouldBe(new Guid(empId));
+            query.ModifiedBy.ShouldBe(_email);
+            query.Modified.ShouldBeInRange(DateTimeOffset.UtcNow.AddMinutes(-1), DateTimeOffset.UtcNow);
         }
     }
 }

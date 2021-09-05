@@ -38,14 +38,14 @@ namespace UnitTests.Features.ManagerProjectAction.Commands.CreateNewActionInProj
         {
             //arrange
             var handler = new CreateNewActionCommandHandler(_context);
-            var guid = new Guid("d5212365-524a-430d-ac75-14a0983edf62");
+            var projId = "d5212365-524a-430d-ac75-14a0983edf62";
             var title = "test title";
             var desc = "test description";
-            var deadline = DateTimeOffset.Now.AddMonths(1);
-            var empId = new Guid("c01423b5-9980-4210-92df-3a2fcbf5b664");
+            var deadline = "2/10/2021";
+            var empId = "c01423b5-9980-4210-92df-3a2fcbf5b664";
             var command = new CreateNewActionCommand()
             {
-                ProjectId = guid,
+                ProjectId = projId,
                 Title = title,
                 Description = desc,
                 Email = _email,
@@ -63,16 +63,191 @@ namespace UnitTests.Features.ManagerProjectAction.Commands.CreateNewActionInProj
                                 where pa.Id == result
                                 select pa).FirstOrDefaultAsync();
             action.Id.ShouldBe(result);
-            action.ProjectId.ShouldBe(guid);
+            action.ProjectId.ShouldBe(new Guid(projId));
             action.Title.ShouldBe(title);
             action.Description.ShouldBe(desc);
-            action.DeadLine.ShouldBe(deadline);
-            action.EmployeeId.ShouldBe(empId);
+            action.DeadLine.ShouldBe(DateTimeOffset.Parse(deadline));
+            action.EmployeeId.ShouldBe(new Guid(empId));
             action.Status.ShouldBe(ProgressStatus.ToDo);
             action.StatusId.ShouldBe(1);
             action.CreatedBy.ShouldBe(_email);
             action.ManagerId.ShouldBe(managerId);
             action.Created.ShouldBeInRange(DateTimeOffset.Now.AddMinutes(-1), DateTimeOffset.Now);
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmptyGuidInvalidEmail()
+        {
+            //arrange
+            var handler = new CreateNewActionCommandHandler(_context);
+            var projId = "d5212365-524a-430d-ac75-14a0983edf62";
+            var title = "test title";
+            var desc = "test description";
+            var deadline = "2/10/2021";
+            var empId = "c01423b5-9980-4210-92df-3a2fcbf5b664";
+            var command = new CreateNewActionCommand()
+            {
+                ProjectId = projId,
+                Title = title,
+                Description = desc,
+                Email = "aaaaa",
+                DeadLine = deadline,
+                EmployeeId = empId
+            };
+            //act
+            var result = await handler.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmptyGuidEmployeeDoesntExist()
+        {
+            //arrange
+            var handler = new CreateNewActionCommandHandler(_context);
+            var projId = "d5212365-524a-430d-ac75-14a0983edf62";
+            var title = "test title";
+            var desc = "test description";
+            var deadline = "2/10/2021";
+            var empId = "c01423b5-aaaa-4210-92df-3a2fcbf5b664";
+            var command = new CreateNewActionCommand()
+            {
+                ProjectId = projId,
+                Title = title,
+                Description = desc,
+                Email = _email,
+                DeadLine = deadline,
+                EmployeeId = empId
+            };
+            //act
+            var result = await handler.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmptyGuidInvalidEmployeeId()
+        {
+            //arrange
+            var handler = new CreateNewActionCommandHandler(_context);
+            var projId = "d5212365-524a-430d-ac75-14a0983edf62";
+            var title = "test title";
+            var desc = "test description";
+            var deadline = "2/10/2021";
+            var empId = "aaaaa";
+            var command = new CreateNewActionCommand()
+            {
+                ProjectId = projId,
+                Title = title,
+                Description = desc,
+                Email = _email,
+                DeadLine = deadline,
+                EmployeeId = empId
+            };
+            //act
+            var result = await handler.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmptyGuidProjectDoesntExist()
+        {
+            //arrange
+            var handler = new CreateNewActionCommandHandler(_context);
+            var projId = "d5212365-aaaa-430d-ac75-14a0983edf62";
+            var title = "test title";
+            var desc = "test description";
+            var deadline = "2/10/2021";
+            var empId = "c01423b5-9980-4210-92df-3a2fcbf5b664";
+            var command = new CreateNewActionCommand()
+            {
+                ProjectId = projId,
+                Title = title,
+                Description = desc,
+                Email = _email,
+                DeadLine = deadline,
+                EmployeeId = empId
+            };
+            //act
+            var result = await handler.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmptyGuidInvalidProjectId()
+        {
+            //arrange
+            var handler = new CreateNewActionCommandHandler(_context);
+            var projId = "aaaaa";
+            var title = "test title";
+            var desc = "test description";
+            var deadline = "2/10/2021";
+            var empId = "c01423b5-9980-4210-92df-3a2fcbf5b664";
+            var command = new CreateNewActionCommand()
+            {
+                ProjectId = projId,
+                Title = title,
+                Description = desc,
+                Email = _email,
+                DeadLine = deadline,
+                EmployeeId = empId
+            };
+            //act
+            var result = await handler.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmptyGuidDateTimeCantBeParse()
+        {
+            //arrange
+            var handler = new CreateNewActionCommandHandler(_context);
+            var projId = "d5212365-524a-430d-ac75-14a0983edf62";
+            var title = "test title";
+            var desc = "test description";
+            var deadline = "aaaaa";
+            var empId = "c01423b5-9980-4210-92df-3a2fcbf5b664";
+            var command = new CreateNewActionCommand()
+            {
+                ProjectId = projId,
+                Title = title,
+                Description = desc,
+                Email = _email,
+                DeadLine = deadline,
+                EmployeeId = empId
+            };
+            //act
+            var result = await handler.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmptyGuidActionHasBeenAlreadyCreated()
+        {
+            //arrange
+            var handler = new CreateNewActionCommandHandler(_context);
+            var projId = "d5212365-524a-430d-ac75-14a0983edf62";
+            var title = "API";
+            var desc = "Create API Controllers";
+            var deadline = "2/10/2021";
+            var empId = "c01423b5-9980-4210-92df-3a2fcbf5b664";
+            var command = new CreateNewActionCommand()
+            {
+                ProjectId = projId,
+                Title = title,
+                Description = desc,
+                Email = _email,
+                DeadLine = deadline,
+                EmployeeId = empId
+            };
+            //act
+            var result = await handler.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBe(Guid.Empty);
         }
     }
 }

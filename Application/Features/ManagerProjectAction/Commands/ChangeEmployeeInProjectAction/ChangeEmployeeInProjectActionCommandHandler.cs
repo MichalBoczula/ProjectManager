@@ -21,23 +21,54 @@ namespace Application.Features.ManagerProjectAction.Commands.ChangeEmployeeInPro
 
         public async Task<Guid> Handle(ChangeEmployeeInProjectActionCommand request, CancellationToken cancellationToken)
         {
-            var employeeId = await (from e in _context.Employees
-                                  where e.Id == request.EmployeeId
-                                  select e.Id).FirstOrDefaultAsync(cancellationToken);
-            if (employeeId == Guid.Empty)
+            var managerId = await (from m in _context.Managers
+                                   where m.Email == request.Email
+                                   select m.Id).FirstOrDefaultAsync(cancellationToken);
+
+            if (managerId == Guid.Empty)
+            {
+                return Guid.Empty;
+            }
+
+            if (!Guid.TryParse(request.ActionId, out Guid actId))
+            {
+                return Guid.Empty;
+            }
+
+            if (!Guid.TryParse(request.EmployeeId, out Guid empId))
             {
                 return Guid.Empty;
             }
 
             var action = await (from pa in _context.ProjectActions
-                                where pa.Id == request.ActionId
+                                where pa.Id == actId
                                 select pa).FirstOrDefaultAsync(cancellationToken);
-            if(action == null)
+
+            if (action == null)
             {
                 return Guid.Empty;
             }
 
-            action.EmployeeId = request.EmployeeId;
+            var employee = await (from e in _context.Employees
+                                  where e.Id == empId
+                                  select e).FirstOrDefaultAsync(cancellationToken);
+
+            if (employee == null)
+            {
+                return Guid.Empty;
+            }
+
+            var checkIsEmployeeAssignedToProject = await (from pem in _context.ProjectEmployeeManagers
+                                                          where pem.EmployeeId == empId
+                                                               && pem.ProjectId == action.ProjectId
+                                                          select pem).FirstOrDefaultAsync(cancellationToken);
+
+            if (checkIsEmployeeAssignedToProject == null)
+            {
+                return Guid.Empty;
+            }
+
+            action.EmployeeId = empId;
 
             _context.ProjectActions.Update(action);
             await _context.SaveChangesAsync(cancellationToken);

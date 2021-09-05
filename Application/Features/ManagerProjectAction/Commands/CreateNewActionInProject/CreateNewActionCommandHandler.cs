@@ -26,23 +26,75 @@ namespace Application.Features.ManagerProjectAction.Commands.CreateNewActionInPr
                                    where m.Email == request.Email
                                    select m.Id).FirstOrDefaultAsync(cancellationToken);
 
-            var action = new ProjectAction()
+            if (managerId == Guid.Empty)
             {
-                ProjectId = request.ProjectId,
-                Title = request.Title,
-                Description = request.Description,
-                DeadLine = request.DeadLine,
-                EmployeeId = request.EmployeeId,
-                ManagerId = managerId,
-                Status = ProgressStatus.ToDo,
-                Feedback = "",
-                StatusId = 1
-            };
+                return Guid.Empty;
+            }
 
-            await _context.ProjectActions.AddAsync(action);
-            await _context.SaveChangesAsync(cancellationToken);
+            if (!Guid.TryParse(request.ProjectId, out Guid projId))
+            {
+                return Guid.Empty;
+            }
 
-            return action.Id;
+            if (!Guid.TryParse(request.EmployeeId, out Guid empId))
+            {
+                return Guid.Empty;
+            }
+
+            if (!DateTimeOffset.TryParse(request.DeadLine, out DateTimeOffset deadline))
+            {
+                return Guid.Empty;
+            }
+
+            var checkIsProjectExists = await (from p in _context.Projects
+                                              where p.Id == projId
+                                              select p).FirstOrDefaultAsync(cancellationToken);
+
+            if (checkIsProjectExists == null)
+            {
+                return Guid.Empty;
+            }
+
+            var checkIsEmployeeExists = await (from e in _context.Employees
+                                               where e.Id == empId
+                                               select e).FirstOrDefaultAsync(cancellationToken);
+
+            if (checkIsEmployeeExists == null)
+            {
+                return Guid.Empty;
+            }
+
+            var checkIsActionExists = await (from pa in _context.ProjectActions
+                                             where pa.ProjectId == projId
+                                                && pa.Title.Equals(request.Title.Trim())
+                                                && pa.Description.Equals(request.Description.Trim())
+                                             select pa.Id).FirstOrDefaultAsync();
+
+            if (checkIsActionExists != Guid.Empty)
+            {
+                return Guid.Empty;
+            }
+            else
+            {
+
+                var action = new ProjectAction()
+                {
+                    ProjectId = projId,
+                    Title = request.Title.Trim(),
+                    Description = request.Description.Trim(),
+                    DeadLine = deadline,
+                    EmployeeId = empId,
+                    ManagerId = managerId,
+                    Status = ProgressStatus.ToDo,
+                    Feedback = "",
+                    StatusId = 1
+                };
+
+                await _context.ProjectActions.AddAsync(action);
+                await _context.SaveChangesAsync(cancellationToken);
+
+                return action.Id;
+            }
         }
     }
 }
