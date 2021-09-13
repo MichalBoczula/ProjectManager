@@ -40,17 +40,11 @@ namespace UnitTests.Features.ManagerProjectAction.Commands.CreateNewProject
             var handler = new CreateNewProjectCommandHandler(_context);
             var title = "test title";
             var desc = "test Description";
-            var emps = new HashSet<Guid>()
-            {
-                new Guid("c01423b5-9980-4210-92df-3a2fcbf5b664"),
-                new Guid("9ce70e45-55f3-4d53-af03-e1b24c97339b")
-            };
             var command = new CreateNewProjectCommand()
             {
                 Title = title,
                 Description = desc,
                 Email = _email,
-                Employees = emps
             };
             //act
             var result = await handler.Handle(command, CancellationToken.None);
@@ -75,11 +69,63 @@ namespace UnitTests.Features.ManagerProjectAction.Commands.CreateNewProject
             var mangerId = await (from m in _context.Managers
                                   where m.Email == _email
                                   select m.Id).FirstOrDefaultAsync();
-            foreach (var ele in await projectEmployeeManagerList.ToListAsync())
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmptyGuidInvalidEmail()
+        {
+            //arrange 
+            var handler = new CreateNewProjectCommandHandler(_context);
+            var title = "test title";
+            var desc = "test Description";
+            var command = new CreateNewProjectCommand()
             {
-                ele.ManagerId.ShouldBe(mangerId);
-                emps.Contains(ele.EmployeeId).ShouldBeTrue();
-            }
+                Title = title,
+                Description = desc,
+                Email = "aaaaa",
+            };
+            //act
+            var result = await handler.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmptyGuidInvalidTitle()
+        {
+            //arrange 
+            var handler = new CreateNewProjectCommandHandler(_context);
+            var title = "";
+            var desc = "test Description";
+            var command = new CreateNewProjectCommand()
+            {
+                Title = title,
+                Description = desc,
+                Email = _email,
+            };
+            //act
+            var result = await handler.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmptyGuidInvalidDescription()
+        {
+            //arrange 
+            var handler = new CreateNewProjectCommandHandler(_context);
+            var title = "test title";
+            var desc = "";
+            var command = new CreateNewProjectCommand()
+            {
+                Title = title,
+                Description = desc,
+                Email = _email,
+            };
+            //act
+            var result = await handler.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBe(Guid.Empty);
         }
     }
 }

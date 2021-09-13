@@ -1,6 +1,7 @@
 ﻿using Application.Features.ManagerProjectAction.Commands.AddEmployeeToProject;
 using Application.Features.ManagerProjectAction.Commands.ChangeEmployeeInProjectAction;
 using Application.Features.ManagerProjectAction.Commands.CreateNewActionInProject;
+using Application.Features.ManagerProjectAction.Commands.CreateNewProject;
 using Application.Features.ManagerProjectAction.Commands.EvaluateProjectAction;
 using Application.Features.ManagerProjectAction.Queries.EmployeesList;
 using Application.Features.ManagerProjectAction.Queries.ProjectActionWithFilter;
@@ -135,6 +136,22 @@ namespace ProjectManager.API.Controllers
                 Description = data.Description,
                 EmployeeId = data.EmployeeId,
                 DeadLine = data.DeadLine
+            });
+            return vm != Guid.Empty ?
+                Ok() :
+                NotFound();
+        }
+
+        [HttpPost("projects/{Email}")]
+        public async Task<ActionResult<ProjectDetailsForManagersVm>> CreateNewProject(
+            string Email,
+            CreateNewProjectDto data)
+        {
+            var vm = await Mediator.Send(new CreateNewProjectCommand()
+            {
+                Email = Email,
+                Title = data.Title,
+                Description = data.Description,
             });
             return vm != Guid.Empty ?
                 Ok() :

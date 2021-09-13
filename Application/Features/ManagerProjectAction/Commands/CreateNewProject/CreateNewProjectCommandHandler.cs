@@ -22,9 +22,20 @@ namespace Application.Features.ManagerProjectAction.Commands.CreateNewProject
 
         public async Task<Guid> Handle(CreateNewProjectCommand request, CancellationToken cancellationToken)
         {
+            var result = CreateNewProjectCommandValidator.Validate(request);
+            if(result.Item1)
+            {
+                return Guid.Empty;
+            }
+
             var mangerId = await (from m in _context.Managers
                                   where m.Email == request.Email
                                   select m.Id).FirstOrDefaultAsync(cancellationToken);
+            if(mangerId == Guid.Empty)
+            {
+                return Guid.Empty;
+            }
+
             var project = new Project()
             {
                 Title = request.Title,
@@ -32,19 +43,10 @@ namespace Application.Features.ManagerProjectAction.Commands.CreateNewProject
                 StatusId = 1,
                 Status = ProjectStatus.Open
             };
+
             await _context.Projects.AddAsync(project);
             await _context.SaveChangesAsync(cancellationToken);
-            foreach (var empId in request.Employees)
-            {
-                var projectEmployeeManager = new ProjectEmployeeManager()
-                {
-                    ManagerId = mangerId,
-                    EmployeeId = empId,
-                    ProjectId = project.Id
-                };
-                await _context.ProjectEmployeeManagers.AddAsync(projectEmployeeManager);
-                await _context.SaveChangesAsync(cancellationToken);
-            }
+            
             return project.Id;
         }
     }
