@@ -26,37 +26,68 @@ namespace Application.Features.ManagerProjectAction.Commands.RemoveEmployeeFromP
                                    where m.Email == request.Email
                                    select m.Id).FirstOrDefaultAsync(cancellationToken);
 
-            var project = await (from pem in _context.ProjectEmployeeManagers
-                                 where pem.EmployeeId == request.EmployeeId
-                                     && pem.ManagerId == managerId
-                                     && pem.ProjectId == request.ProjectId
-                                 select pem).FirstOrDefaultAsync(cancellationToken);
-
-            if (project == null)
+            if (managerId == Guid.Empty)
             {
                 return null;
             }
-            else
+
+            if (!Guid.TryParse(request.ProjectId, out Guid projId))
             {
-                var actions = await (from pa in _context.ProjectActions
-                                     where pa.EmployeeId == request.EmployeeId
-                                        && pa.ManagerId == managerId
-                                        && pa.ProjectId == request.ProjectId
-                                     select pa).ToListAsync(cancellationToken);
-
-                foreach (var ele in actions)
-                {
-                    ele.EmployeeId = Guid.Empty;
-
-                    _context.ProjectActions.Update(ele);
-                    await _context.SaveChangesAsync(cancellationToken);
-                }
-
-                _context.ProjectEmployeeManagers.Remove(project);
-                await _context.SaveChangesAsync(cancellationToken);
-
-                return project;
+                return null;
             }
+
+            var projectId = await (from p in _context.Projects
+                                   where p.Id == projId
+                                   select p.Id).FirstOrDefaultAsync(cancellationToken);
+
+            if (projectId == Guid.Empty)
+            {
+                return null;
+            }
+
+            if (!Guid.TryParse(request.EmployeeId, out Guid empId))
+            {
+                return null;
+            }
+
+            var employeeId = await (from e in _context.Employees
+                                    where e.Id == empId
+                                    select e.Id).FirstOrDefaultAsync(cancellationToken);
+
+            if (employeeId == Guid.Empty)
+            {
+                return null;
+            }
+
+            var actions = await (from pa in _context.ProjectActions
+                                 where pa.EmployeeId == empId
+                                    && pa.ManagerId == managerId
+                                    && pa.ProjectId == projId
+                                 select pa).ToListAsync(cancellationToken);
+
+            if (actions.Count() == 0)
+            {
+                return null;
+            }
+
+            foreach (var ele in actions)
+            {
+                ele.EmployeeId = Guid.Empty;
+
+                _context.ProjectActions.Update(ele);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+
+            var item = await (from pem in _context.ProjectEmployeeManagers
+                              where pem.EmployeeId == empId
+                                && pem.ManagerId == managerId
+                                && pem.ProjectId == projectId
+                              select pem).FirstOrDefaultAsync(cancellationToken);
+
+            _context.ProjectEmployeeManagers.Remove(item);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return item;
         }
     }
 }

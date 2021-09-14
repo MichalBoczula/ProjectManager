@@ -3,6 +3,7 @@ using Application.Features.ManagerProjectAction.Commands.ChangeEmployeeInProject
 using Application.Features.ManagerProjectAction.Commands.CreateNewActionInProject;
 using Application.Features.ManagerProjectAction.Commands.CreateNewProject;
 using Application.Features.ManagerProjectAction.Commands.EvaluateProjectAction;
+using Application.Features.ManagerProjectAction.Commands.RemoveEmployeeFromProject;
 using Application.Features.ManagerProjectAction.Queries.EmployeesList;
 using Application.Features.ManagerProjectAction.Queries.ProjectActionWithFilter;
 using Application.Features.ManagerProjectAction.Queries.ProjectDetails;
@@ -21,36 +22,36 @@ namespace ProjectManager.API.Controllers
     [ApiController]
     public class ManagerProjectActionController : BaseController
     {
-        [HttpGet("projects/{Email}")]
-        public async Task<ActionResult<List<ProjectForManagersList>>> GetProjectList(string Email)
+        [HttpGet("{email}projects")]
+        public async Task<ActionResult<List<ProjectForManagersList>>> GetProjectList(string email)
         {
-            var vm = await Mediator.Send(new ProjectListForManagerQuery { Email = Email });
+            var vm = await Mediator.Send(new ProjectListForManagerQuery { Email = email });
             return vm != null ?
                 Ok(vm) :
                 NotFound(vm);
         }
 
-        [HttpGet("employees/{Email}")]
-        public async Task<ActionResult<EmployeeForManagerVm>> GetEmployeeList(string Email)
+        [HttpGet("{email}/employees")]
+        public async Task<ActionResult<EmployeeForManagerVm>> GetEmployeeList(string email)
         {
-            var vm = await Mediator.Send(new EmployeeListFormManagerQuery() { Email = Email });
+            var vm = await Mediator.Send(new EmployeeListFormManagerQuery() { Email = email });
             return vm != null ?
                 Ok(vm) :
                 NotFound(vm);
         }
 
-        [HttpGet("projects/{Email}/{Id}")]
-        public async Task<ActionResult<ProjectDetailsForManagersVm>> GetProjectDetails(string Email, string Id)
+        [HttpGet("{email}/projects/{projectId}")]
+        public async Task<ActionResult<ProjectDetailsForManagersVm>> GetProjectDetails(string email, string projectId)
         {
-            var vm = await Mediator.Send(new ManagerProjectDetailsQuery() { Email = Email, ProjectId = Id });
+            var vm = await Mediator.Send(new ManagerProjectDetailsQuery() { Email = email, ProjectId = projectId });
             return vm != null ?
                 Ok(vm) :
                 NotFound(vm);
         }
 
-        [HttpGet("actions/{Email}")]
+        [HttpGet("{email}/actions")]
         public async Task<ActionResult<List<ProjectActionWithFilterVm>>> GetActions(
-            string Email,
+            string email,
             [FromQuery] string ActionName,
             [FromQuery] string ActionStatus,
             [FromQuery] int Skip,
@@ -59,7 +60,7 @@ namespace ProjectManager.API.Controllers
 
             var vm = await Mediator.Send(new ProjectActionWithFilterQuery()
             {
-                Email = Email,
+                Email = email,
                 ActionName = ActionName,
                 ActionStatus = ActionStatus,
                 Skip = Skip,
@@ -70,16 +71,16 @@ namespace ProjectManager.API.Controllers
                 NotFound(vm);
         }
 
-        [HttpPut("actions/{Email}/{Id}")]
+        [HttpPut("{email}/actions/{actId}")]
         public async Task<ActionResult<ProjectDetailsForManagersVm>> CheckAction(
-            string Email,
-            string Id,
+            string email,
+            string actId,
             EvaluateProjectActionDto data)
         {
             var vm = await Mediator.Send(new EvaluateProjectActionCommand()
             {
-                Email = Email,
-                ProjectActionId = Id,
+                Email = email,
+                ProjectActionId = actId,
                 IsAccepted = data.IsAccepted,
                 Feedback = data.Feedback
             }); ;
@@ -88,16 +89,16 @@ namespace ProjectManager.API.Controllers
                 NotFound(vm);
         }
 
-        [HttpPost("projects/{Email}/{ProjId}")]
+        [HttpPost("{email}/projects/{projId}")]
         public async Task<ActionResult<ProjectDetailsForManagersVm>> AddEmployeeToProject(
-            string Email,
-            string ProjId,
+            string email,
+            string projId,
             AddEmployeeToProjectDto data)
         {
             var vm = await Mediator.Send(new AddEmployeeToProjectCommand()
             {
-                Email = Email,
-                ProjectId = ProjId,
+                Email = email,
+                ProjectId = projId,
                 EmployeeId = data.EmployeeId
             });
             return vm != null ?
@@ -105,16 +106,16 @@ namespace ProjectManager.API.Controllers
                 NotFound();
         }
 
-        [HttpPut("projects/actions/{Email}/{ActId}")]
+        [HttpPut("{email}/projects/actions/{actId}")]
         public async Task<ActionResult<ProjectDetailsForManagersVm>> ChangeEmployeeInAction(
-            string Email,
-            string ActId,
+            string email,
+            string actId,
             AddEmployeeToProjectDto data)
         {
             var vm = await Mediator.Send(new ChangeEmployeeInProjectActionCommand()
             {
-                Email = Email,
-                ActionId = ActId,
+                Email = email,
+                ActionId = actId,
                 EmployeeId = data.EmployeeId
             });
             return vm != Guid.Empty ?
@@ -122,16 +123,16 @@ namespace ProjectManager.API.Controllers
                 NotFound();
         }
 
-        [HttpPost("projects/actions/{Email}/{ProjectId}")]
+        [HttpPost("{email}/projects/actions/{projectId}")]
         public async Task<ActionResult<ProjectDetailsForManagersVm>> AddActionToProject(
-            string Email,
-            string ProjectId,
+            string email,
+            string projectId,
             CreateNewActionInProjectDto data)
         {
-            var vm = await Mediator.Send(new CreateNewActionCommand() 
-            { 
-                Email = Email,
-                ProjectId = ProjectId, 
+            var vm = await Mediator.Send(new CreateNewActionCommand()
+            {
+                Email = email,
+                ProjectId = projectId,
                 Title = data.Title,
                 Description = data.Description,
                 EmployeeId = data.EmployeeId,
@@ -142,18 +143,35 @@ namespace ProjectManager.API.Controllers
                 NotFound();
         }
 
-        [HttpPost("projects/{Email}")]
+        [HttpPost("{email}/projects")]
         public async Task<ActionResult<ProjectDetailsForManagersVm>> CreateNewProject(
-            string Email,
+            string email,
             CreateNewProjectDto data)
         {
             var vm = await Mediator.Send(new CreateNewProjectCommand()
             {
-                Email = Email,
+                Email = email,
                 Title = data.Title,
                 Description = data.Description,
             });
             return vm != Guid.Empty ?
+                Ok() :
+                NotFound();
+        }
+
+        [HttpDelete("{email}/projects/{projectId}")]
+        public async Task<ActionResult<ProjectDetailsForManagersVm>> DeleteEmployeeFromProject(
+            string email,
+            string projectId,
+            RemoveEmployeeFromProjectCommandDto data)
+        {
+            var vm = await Mediator.Send(new RemoveEmployeeFromProjectCommand()
+            {
+                Email = email,
+                ProjectId = projectId,
+                EmployeeId = data.EmployeeId,
+            });
+            return vm != null ?
                 Ok() :
                 NotFound();
         }

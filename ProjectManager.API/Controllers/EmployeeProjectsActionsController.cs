@@ -14,10 +14,10 @@ namespace ProjectManager.API.Controllers
     [ApiController]
     public class EmployeeProjectsActionsController : BaseController
     {
-        [HttpGet("{Email}")]
-        public async Task<ActionResult<List<ProjectVm>>> GetList(string Email)
+        [HttpGet("{email}/projects")]
+        public async Task<ActionResult<List<ProjectVm>>> GetList(string email)
         {
-            var vm = await Mediator.Send(new ProjectsListForEmployeeQuery() { Email = Email });
+            var vm = await Mediator.Send(new ProjectsListForEmployeeQuery() { Email = email });
             if (vm != null)
             {
                 return Ok(vm);
@@ -28,10 +28,10 @@ namespace ProjectManager.API.Controllers
             }
         }
 
-        [HttpGet("actions/{Id}")]
-        public async Task<ActionResult<ProjectActionDetailsVm>> GetDetails(string Id)
+        [HttpGet("actions/{actionId}")]
+        public async Task<ActionResult<ProjectActionDetailsVm>> GetDetails(string actionId)
         {
-            var vm = await Mediator.Send(new ProjectActionDetailsQuery { ProjectActionId = Id });
+            var vm = await Mediator.Send(new ProjectActionDetailsQuery { ProjectActionId = actionId });
             if (vm != null)
             {
                 return Ok(vm);
@@ -42,10 +42,10 @@ namespace ProjectManager.API.Controllers
             }
         }
 
-        [HttpPut("actions/{Id}")]
-        public async Task<ActionResult<ProjectActionDetailsVm>> SendActionToCheck(string Id)
+        [HttpPut("actions/{actionId}")]
+        public async Task<ActionResult<ProjectActionDetailsVm>> SendActionToCheck(string actionId)
         {
-            var vm = await Mediator.Send(new SendActionToCheckCommand { ProjectActionId = Id });
+            var vm = await Mediator.Send(new SendActionToCheckCommand { ProjectActionId = actionId });
             if (vm == Guid.Empty)
             {
                 return NotFound();

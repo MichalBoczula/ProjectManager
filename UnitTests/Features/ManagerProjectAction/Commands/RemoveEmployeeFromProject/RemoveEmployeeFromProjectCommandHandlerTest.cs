@@ -38,8 +38,8 @@ namespace UnitTests.Features.ManagerProjectAction.Commands.RemoveEmployeeFromPro
         {
             //arrange
             var handle = new RemoveEmployeeFromProjectCommandHandler(_context);
-            var empId = new Guid("c01423b5-9980-4210-92df-3a2fcbf5b664");
-            var projectId = new Guid("d5212365-524a-430d-ac75-14a0983edf62");
+            var empId = "c01423b5-9980-4210-92df-3a2fcbf5b664";
+            var projectId = "d5212365-524a-430d-ac75-14a0983edf62";
             var managerGuid = new Guid("b517ef40-f882-48cf-8649-cbca908e0787");
             var command = new RemoveEmployeeFromProjectCommand()
             {
@@ -51,29 +51,124 @@ namespace UnitTests.Features.ManagerProjectAction.Commands.RemoveEmployeeFromPro
             var result = await handle.Handle(command, CancellationToken.None);
             //assert
             result.ShouldBeOfType<ProjectEmployeeManager>();
-            result.EmployeeId.ShouldBe(empId);
-            result.ProjectId.ShouldBe(projectId);
+            result.EmployeeId.ShouldBe(new Guid(empId));
+            result.ProjectId.ShouldBe(new Guid(projectId));
             result.ManagerId.ShouldBe(managerGuid);
             var query = await (from pem in _context.ProjectEmployeeManagers
-                             where pem.EmployeeId == empId
+                             where pem.EmployeeId == new Guid(empId)
                              && pem.ManagerId == managerGuid
-                             && pem.ProjectId == projectId
+                             && pem.ProjectId == new Guid(projectId)
                              select pem).FirstOrDefaultAsync();
             query.ShouldBeNull();
             var actions = await (from pa in _context.ProjectActions
-                               where pa.EmployeeId == empId
-                               && pa.ProjectId == projectId
+                               where pa.EmployeeId == new Guid(empId)
+                               && pa.ProjectId == new Guid(projectId)
                                select pa).ToListAsync();
             actions.ShouldBeEmpty();
         }
 
         [Fact]
-        public async Task ShouldNOTRemoveEmployeeFromProject()
+        public async Task ShouldReturnNullInvalidProjectId()
         {
             //arrange
             var handle = new RemoveEmployeeFromProjectCommandHandler(_context);
-            var empId = new Guid("c01423b5-9980-4210-aaaa-3a2fcbf5b664");
-            var projectId = new Guid("d5212365-524a-430d-ac75-14a0983edf62");
+            var empId = "c01423b5-9980-4210-92df-3a2fcbf5b664";
+            var projectId ="aaaaa";
+            var command = new RemoveEmployeeFromProjectCommand()
+            {
+                EmployeeId = empId,
+                ProjectId = projectId,
+                Email = _email
+            };
+            //act
+            var result = await handle.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBeNull();
+        }
+
+        [Fact]
+        public async Task ShouldReturnNullInvalidEmployeeId()
+        {
+            //arrange
+            var handle = new RemoveEmployeeFromProjectCommandHandler(_context);
+            var empId = "aaaaa";
+            var projectId = "d5212365-524a-430d-ac75-14a0983edf62";
+            var command = new RemoveEmployeeFromProjectCommand()
+            {
+                EmployeeId = empId,
+                ProjectId = projectId,
+                Email = _email
+            };
+            //act
+            var result = await handle.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBeNull();
+        }
+
+        [Fact]
+        public async Task ShouldReturnNullInvalidEmail()
+        {
+            //arrange
+            var handle = new RemoveEmployeeFromProjectCommandHandler(_context);
+            var empId ="c01423b5-9980-4210-92df-3a2fcbf5b664";
+            var projectId = "d5212365-524a-430d-ac75-14a0983edf62";
+            var command = new RemoveEmployeeFromProjectCommand()
+            {
+                EmployeeId = empId,
+                ProjectId = projectId,
+                Email = "aaaaa"
+            };
+            //act
+            var result = await handle.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBeNull();
+        }
+
+        [Fact]
+        public async Task ShouldReturnNullEmployeeInProjectDoesNOTExists()
+        {
+            //arrange
+            var handle = new RemoveEmployeeFromProjectCommandHandler(_context);
+            var empId = "c01423b5-aaaa-4210-92df-3a2fcbf5b664";
+            var projectId = "d5212365-524a-430d-ac75-14a0983edf62";
+            var command = new RemoveEmployeeFromProjectCommand()
+            {
+                EmployeeId = empId,
+                ProjectId = projectId,
+                Email = _email
+            };
+            //act
+            var result = await handle.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBeNull();
+        }
+
+        [Fact]
+        public async Task ShouldReturnNullProjectDoesNOTExists()
+        {
+            //arrange
+            var handle = new RemoveEmployeeFromProjectCommandHandler(_context);
+            var empId = "c01423b5-9980-4210-92df-3a2fcbf5b664";
+            var projectId = "d5212365-aaaa-430d-ac75-14a0983edf62";
+            var command = new RemoveEmployeeFromProjectCommand()
+            {
+                EmployeeId = empId,
+                ProjectId = projectId,
+                Email = _email
+            };
+            //act
+            var result = await handle.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBeNull();
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmployeeIsNOTAssignedToProject()
+        {
+            //arrange
+            var handle = new RemoveEmployeeFromProjectCommandHandler(_context);
+            var empId = "7c2cc216-d5cc-4062-97ca-e326e590e9f9";
+            var projectId = "d5212365-524a-430d-ac75-14a0983edf62";
             var command = new RemoveEmployeeFromProjectCommand()
             {
                 EmployeeId = empId,
