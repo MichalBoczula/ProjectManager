@@ -4,6 +4,7 @@ using Application.Features.ManagerProjectAction.Commands.CreateNewActionInProjec
 using Application.Features.ManagerProjectAction.Commands.CreateNewProject;
 using Application.Features.ManagerProjectAction.Commands.EvaluateProjectAction;
 using Application.Features.ManagerProjectAction.Commands.RemoveEmployeeFromProject;
+using Application.Features.ManagerProjectAction.Commands.UpdateActionInProject;
 using Application.Features.ManagerProjectAction.Queries.EmployeesList;
 using Application.Features.ManagerProjectAction.Queries.ProjectActionWithFilter;
 using Application.Features.ManagerProjectAction.Queries.ProjectDetails;
@@ -106,7 +107,7 @@ namespace ProjectManager.API.Controllers
                 NotFound();
         }
 
-        [HttpPut("{email}/projects/actions/{actId}")]
+        [HttpPut("{email}/projects/actions/employees/{actId}")]
         public async Task<ActionResult<ProjectDetailsForManagersVm>> ChangeEmployeeInAction(
             string email,
             string actId,
@@ -172,6 +173,25 @@ namespace ProjectManager.API.Controllers
                 EmployeeId = data.EmployeeId,
             });
             return vm != null ?
+                Ok() :
+                NotFound();
+        }
+
+        [HttpPut("{email}/projects/actions/{actionId}")]
+        public async Task<ActionResult<Guid>> UpdateProjectAction(
+            string email,
+            string actionId,
+            UpdateActionCommandDto data)
+        {
+            var vm = await Mediator.Send(new UpdateActionCommand()
+            {
+                Email = email,
+                ActionId = actionId,
+                Title = data.Title,
+                Description = data.Description,
+                DeadLine = data.DeadLine
+            });
+            return vm != Guid.Empty ?
                 Ok() :
                 NotFound();
         }

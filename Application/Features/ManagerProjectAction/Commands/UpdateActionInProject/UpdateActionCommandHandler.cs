@@ -21,7 +21,17 @@ namespace Application.Features.ManagerProjectAction.Commands.UpdateActionInProje
 
         public async Task<Guid> Handle(UpdateActionCommand request, CancellationToken cancellationToken)
         {
-            if (!Guid.TryParse(request.Id, out Guid guid))
+            var managerId = await (from m in _context.Managers
+                            where m.Email == request.Email
+                            select m.Id).FirstOrDefaultAsync(cancellationToken);
+
+            if(managerId == Guid.Empty)
+            {
+                return Guid.Empty;
+
+            }
+
+            if (!Guid.TryParse(request.ActionId, out Guid guid))
             {
                 return Guid.Empty;
             }

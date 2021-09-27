@@ -33,6 +33,30 @@ namespace UnitTests.Features.ManagerProjectAction.Commands
         }
 
         [Fact]
+        public async Task ShouldReturnEmptyGuidInvalidEmail()
+        {
+            //arrange
+            var handle = new UpdateActionCommandHandler(_context);
+            var guid = "21b21a7e-402f-4fa0-850f-0a22f48193dd";
+            var title = "Up title";
+            var desc = "Up desc";
+            var date = "15/09/21 08:45:00 +1:00";
+            var command = new UpdateActionCommand()
+            {
+                ActionId = guid,
+                Title = title,
+                Description = desc,
+                DeadLine = date,
+                Email = "aaaaa"
+            };
+            //act
+            var result = await handle.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBeOfType<Guid>();
+            result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
         public async Task ShouldReturnEmptyGuidInvalidGuid()
         {
             //arrange
@@ -43,10 +67,11 @@ namespace UnitTests.Features.ManagerProjectAction.Commands
             var date = "15/09/21 08:45:00 +1:00";
             var command = new UpdateActionCommand()
             {
-                Id = guid,
+                ActionId = guid,
                 Title = title,
                 Description = desc,
-                DeadLine = date
+                DeadLine = date,
+                Email = _email
             };
             //act
             var result = await handle.Handle(command, CancellationToken.None);
@@ -66,10 +91,11 @@ namespace UnitTests.Features.ManagerProjectAction.Commands
             var date = "aaaaa";
             var command = new UpdateActionCommand()
             {
-                Id = guid,
+                ActionId = guid,
                 Title = title,
                 Description = desc,
-                DeadLine = date
+                DeadLine = date,
+                Email = _email
             };
             //act
             var result = await handle.Handle(command, CancellationToken.None);
@@ -89,10 +115,11 @@ namespace UnitTests.Features.ManagerProjectAction.Commands
             var date = "15/09/21 08:45:00 +1:00";
             var command = new UpdateActionCommand()
             {
-                Id = guid,
+                ActionId = guid,
                 Title = title,
                 Description = desc,
-                DeadLine = date
+                DeadLine = date,
+                Email = _email
             };
             //act
             var result = await handle.Handle(command, CancellationToken.None);
@@ -112,10 +139,11 @@ namespace UnitTests.Features.ManagerProjectAction.Commands
             var date = "15/09/21 08:45:00 +1:00";
             var command = new UpdateActionCommand()
             {
-                Id = guid,
+                ActionId = guid,
                 Title = title,
                 Description = desc,
-                DeadLine = date
+                DeadLine = date,
+                Email = _email
             };
             //act
             var result = await handle.Handle(command, CancellationToken.None);
@@ -135,10 +163,11 @@ namespace UnitTests.Features.ManagerProjectAction.Commands
             var date = "15/09/21 08:45:00 +1:00";
             var command = new UpdateActionCommand()
             {
-                Id = guid,
+                ActionId = guid,
                 Title = title,
                 Description = desc,
-                DeadLine = date
+                DeadLine = date,
+                Email = _email
             };
             //act
             var result = await handle.Handle(command, CancellationToken.None);
@@ -158,10 +187,11 @@ namespace UnitTests.Features.ManagerProjectAction.Commands
             var date = "15/09/21 08:45:00 +1:00";
             var command = new UpdateActionCommand()
             {
-                Id = guid,
+                ActionId = guid,
                 Title = title,
                 Description = desc,
-                DeadLine = date
+                DeadLine = date,
+                Email = _email
             };
             //act
             var result = await handle.Handle(command, CancellationToken.None);
