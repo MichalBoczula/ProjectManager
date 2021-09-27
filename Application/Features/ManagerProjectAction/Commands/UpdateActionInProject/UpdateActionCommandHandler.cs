@@ -21,15 +21,37 @@ namespace Application.Features.ManagerProjectAction.Commands.UpdateActionInProje
 
         public async Task<Guid> Handle(UpdateActionCommand request, CancellationToken cancellationToken)
         {
-            var action = await (from pa in _context.ProjectActions
-                                where pa.Id == request.Id
-                                select pa).FirstOrDefaultAsync(cancellationToken);
-            if(action == null)
+            if (!Guid.TryParse(request.Id, out Guid guid))
             {
                 return Guid.Empty;
             }
 
-            UpdateActionCommandValidator.Validate(action, request);
+            if (!DateTimeOffset.TryParse(request.DeadLine, out DateTimeOffset date))
+            {
+                return Guid.Empty;
+            }
+
+            if (String.IsNullOrWhiteSpace(request.Title))
+            {
+                return Guid.Empty;
+            }
+
+            if (String.IsNullOrWhiteSpace(request.Description))
+            {
+                return Guid.Empty;
+            }
+
+            var action = await (from pa in _context.ProjectActions
+                                where pa.Id == guid
+                                select pa).FirstOrDefaultAsync(cancellationToken);
+            if (action == null)
+            {
+                return Guid.Empty;
+            }
+
+            action.Title = request.Title;
+            action.Description = request.Description;
+            action.DeadLine = date;
 
             _context.ProjectActions.Update(action);
             await _context.SaveChangesAsync(cancellationToken);

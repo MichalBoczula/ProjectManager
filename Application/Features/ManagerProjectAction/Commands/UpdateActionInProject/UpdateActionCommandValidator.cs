@@ -19,10 +19,10 @@ namespace Application.Features.ManagerProjectAction.Commands.UpdateActionInProje
             {
                 action.Description = request.Description;
             }
-            if (request.DeadLine != null)
-            {
-                action.DeadLine = request.DeadLine;
-            }
+            //if (request.DeadLine != null)
+            //{
+            //    action.DeadLine = request.DeadLine;
+            //}
         }
     }
 }

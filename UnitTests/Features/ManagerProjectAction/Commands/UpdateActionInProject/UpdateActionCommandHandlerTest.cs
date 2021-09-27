@@ -33,48 +33,14 @@ namespace UnitTests.Features.ManagerProjectAction.Commands
         }
 
         [Fact]
-        public async Task ShouldUpdateAction()
+        public async Task ShouldReturnEmptyGuidInvalidGuid()
         {
             //arrange
             var handle = new UpdateActionCommandHandler(_context);
-            var guid = new Guid("21b21a7e-402f-4fa0-850f-0a22f48193dd");
+            var guid = "aaaaa";
             var title = "Up title";
             var desc = "Up desc";
-            var date = new DateTimeOffset(2000, 12, 12, 0, 0, 0, TimeSpan.Zero);
-            var command = new UpdateActionCommand()
-            {
-                Id = guid,
-                Title = title,
-                Description = desc,
-                DeadLine = date
-            };
-            //act
-            var result = await handle.Handle(command, CancellationToken.None);
-            //assert
-            result.ShouldBeOfType<Guid>();
-            result.ShouldBe(guid);
-            var action = await (from pa in _context.ProjectActions
-                                where pa.Id == guid
-                                select new
-                                {
-                                    pa.Title,
-                                    pa.DeadLine,
-                                    pa.Description
-                                }).FirstOrDefaultAsync();
-            action.Title.ShouldBe(title);
-            action.Description.ShouldBe(desc);
-            action.DeadLine.ShouldBe(date);
-        }
-
-        [Fact]
-        public async Task ShouldNOTUpdateAction()
-        {
-            //arrange
-            var handle = new UpdateActionCommandHandler(_context);
-            var guid = new Guid("21b21a7e-402f-aaaa-850f-0a22f48193dd");
-            var title = "Up title";
-            var desc = "Up desc";
-            var date = new DateTimeOffset(2000, 12, 12, 0, 0, 0, TimeSpan.Zero);
+            var date = "15/09/21 08:45:00 +1:00";
             var command = new UpdateActionCommand()
             {
                 Id = guid,
@@ -87,6 +53,129 @@ namespace UnitTests.Features.ManagerProjectAction.Commands
             //assert
             result.ShouldBeOfType<Guid>();
             result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmptyGuidInvalidDate()
+        {
+            //arrange
+            var handle = new UpdateActionCommandHandler(_context);
+            var guid = "21b21a7e-402f-4fa0-850f-0a22f48193dd";
+            var title = "Up title";
+            var desc = "Up desc";
+            var date = "aaaaa";
+            var command = new UpdateActionCommand()
+            {
+                Id = guid,
+                Title = title,
+                Description = desc,
+                DeadLine = date
+            };
+            //act
+            var result = await handle.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBeOfType<Guid>();
+            result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmptyGuidInvalidEmptyTitle()
+        {
+            //arrange
+            var handle = new UpdateActionCommandHandler(_context);
+            var guid = "21b21a7e-402f-4fa0-850f-0a22f48193dd";
+            var title = "";
+            var desc = "Up desc";
+            var date = "15/09/21 08:45:00 +1:00";
+            var command = new UpdateActionCommand()
+            {
+                Id = guid,
+                Title = title,
+                Description = desc,
+                DeadLine = date
+            };
+            //act
+            var result = await handle.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBeOfType<Guid>();
+            result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmptyGuidInvalidEmptyDescription()
+        {
+            //arrange
+            var handle = new UpdateActionCommandHandler(_context);
+            var guid = "21b21a7e-402f-4fa0-850f-0a22f48193dd";
+            var title = "Up title";
+            var desc = "";
+            var date = "15/09/21 08:45:00 +1:00";
+            var command = new UpdateActionCommand()
+            {
+                Id = guid,
+                Title = title,
+                Description = desc,
+                DeadLine = date
+            };
+            //act
+            var result = await handle.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBeOfType<Guid>();
+            result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
+        public async Task ShouldReturnEmptyGuidActionDoesntExists()
+        {
+            //arrange
+            var handle = new UpdateActionCommandHandler(_context);
+            var guid = "21b21a7e-402f-aaaa-850f-0a22f48193dd";
+            var title = "Up title";
+            var desc = "Up desc";
+            var date = "15/09/21 08:45:00 +1:00";
+            var command = new UpdateActionCommand()
+            {
+                Id = guid,
+                Title = title,
+                Description = desc,
+                DeadLine = date
+            };
+            //act
+            var result = await handle.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBeOfType<Guid>();
+            result.ShouldBe(Guid.Empty);
+        }
+
+        [Fact]
+        public async Task ShouldUpdateAction()
+        {
+            //arrange
+            var handle = new UpdateActionCommandHandler(_context);
+            var guid = "21b21a7e-402f-4fa0-850f-0a22f48193dd";
+            var title = "Up title";
+            var desc = "Up desc";
+            var date = "15/09/21 08:45:00 +1:00";
+            var command = new UpdateActionCommand()
+            {
+                Id = guid,
+                Title = title,
+                Description = desc,
+                DeadLine = date
+            };
+            //act
+            var result = await handle.Handle(command, CancellationToken.None);
+            //assert
+            result.ShouldBeOfType<Guid>();
+            result.ShouldBe(new Guid(guid));
+            var action = await (from pa in _context.ProjectActions
+                                where pa.Id == new Guid(guid)
+                                select pa).FirstOrDefaultAsync();
+            action.Title.ShouldBe(title);
+            action.Description.ShouldBe(desc);
+            action.DeadLine.ShouldBe(DateTimeOffset.Parse(date));
+            action.ModifiedBy.ShouldBe("PaulAllen@email.com");
+            action.Modified.ShouldBeInRange(DateTimeOffset.UtcNow.AddSeconds(-10), DateTimeOffset.UtcNow);
         }
     }
 }
