@@ -9,8 +9,10 @@ namespace Application.Features.ManagerProjectAction.Commands.UpdateProject
 {
     public class UpdateProjectCommand : IRequest<Guid>
     {
-        public Guid ProjectId { get; set; }
+        public string ProjectId { get; set; }
+        public string Email { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public string Status { get; set; }
     }
 }
