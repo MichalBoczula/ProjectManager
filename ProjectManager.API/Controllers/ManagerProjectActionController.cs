@@ -5,6 +5,7 @@ using Application.Features.ManagerProjectAction.Commands.CreateNewProject;
 using Application.Features.ManagerProjectAction.Commands.EvaluateProjectAction;
 using Application.Features.ManagerProjectAction.Commands.RemoveEmployeeFromProject;
 using Application.Features.ManagerProjectAction.Commands.UpdateActionInProject;
+using Application.Features.ManagerProjectAction.Commands.UpdateProject;
 using Application.Features.ManagerProjectAction.Queries.EmployeesList;
 using Application.Features.ManagerProjectAction.Queries.ProjectActionWithFilter;
 using Application.Features.ManagerProjectAction.Queries.ProjectDetails;
@@ -190,6 +191,25 @@ namespace ProjectManager.API.Controllers
                 Title = data.Title,
                 Description = data.Description,
                 DeadLine = data.DeadLine
+            });
+            return vm != Guid.Empty ?
+                Ok() :
+                NotFound();
+        }
+
+        [HttpPut("{email}/projects/{projectId}")]
+        public async Task<ActionResult<Guid>> UpdateProject(
+            string email,
+            string projectId,
+            UpdateProjectCommandDto data)
+        {
+            var vm = await Mediator.Send(new UpdateProjectCommand()
+            {
+                Email = email,
+                ProjectId = projectId,
+                Title = data.Title,
+                Description = data.Description,
+                Status = data.Status
             });
             return vm != Guid.Empty ?
                 Ok() :
