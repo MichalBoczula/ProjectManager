@@ -28,7 +28,7 @@ namespace ProjectManager.API.Controllers
             }
         }
 
-        [HttpGet("actions/{actionId}")]
+        [HttpGet("{email}/actions/{actionId}")]
         public async Task<ActionResult<ProjectActionDetailsVm>> GetDetails(string actionId)
         {
             var vm = await Mediator.Send(new ProjectActionDetailsQuery { ProjectActionId = actionId });
@@ -42,7 +42,7 @@ namespace ProjectManager.API.Controllers
             }
         }
 
-        [HttpPut("actions/{actionId}")]
+        [HttpPut("{email}/actions/{actionId}")]
         public async Task<ActionResult<ProjectActionDetailsVm>> SendActionToCheck(string actionId)
         {
             var vm = await Mediator.Send(new SendActionToCheckCommand { ProjectActionId = actionId });

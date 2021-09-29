@@ -30,9 +30,15 @@ namespace UnitTests.Features.EmployeeProjectsActions.Queries.Details
         {
             //arrange
             var handler = new ProjectActionDetailsQueryHandler(_context, _mapper);
+            var email = "AdamKowalski@email.com";
+            var guid = "21b21a7e-402f-4fa0-850f-0a22f48193dd";
             //act
             var result = await handler.Handle(
-                    new ProjectActionDetailsQuery() { ProjectActionId = "21b21a7e-402f-4fa0-850f-0a22f48193dd" },
+                    new ProjectActionDetailsQuery() 
+                    {
+                        ProjectActionId =  guid,
+                        Email = email
+                    },
                     cancellationToken: CancellationToken.None);
             //assert
             result.ShouldBeOfType<ProjectActionDetailsVm>();
@@ -48,14 +54,58 @@ namespace UnitTests.Features.EmployeeProjectsActions.Queries.Details
 
 
         [Fact]
-        public async Task ShouldReturnNull()
+        public async Task ShouldReturnNullActionDoesntExists()
         {
             //arrange
             var handler = new ProjectActionDetailsQueryHandler(_context, _mapper);
+            var email = "AdamKowalski@email.com";
+            var guid = "21b21a7e-0000-4fa0-850f-0a22f48193dd";
             //act
             var result = await handler.Handle(
-                    new ProjectActionDetailsQuery() { ProjectActionId = "21b21a7e-0000-4fa0-850f-0a22f48193dd" },
+                    new ProjectActionDetailsQuery()
+                    {
+                        ProjectActionId = guid,
+                        Email = email
+                    },
                     cancellationToken: CancellationToken.None);
+            //assert
+            result.ShouldBeNull();
+        }
+
+        [Fact]
+        public async Task ShouldReturnNullInvalidGuid()
+        {
+            //arrange
+            var handler = new ProjectActionDetailsQueryHandler(_context, _mapper);
+            var email = "AdamKowalski@email.com";
+            var guid = "aaaaa";
+            //act
+            var result = await handler.Handle(
+                  new ProjectActionDetailsQuery()
+                  {
+                      ProjectActionId = guid,
+                      Email = email
+                  },
+                  cancellationToken: CancellationToken.None);
+            //assert
+            result.ShouldBeNull();
+        }
+
+        [Fact]
+        public async Task ShouldReturnNullEmployeeDoesntExists()
+        {
+            //arrange
+            var handler = new ProjectActionDetailsQueryHandler(_context, _mapper);
+            var email = "aaaaa@email.com";
+            var guid = "21b21a7e-402f-4fa0-850f-0a22f48193dd";
+            //act
+            var result = await handler.Handle(
+                  new ProjectActionDetailsQuery()
+                  {
+                      ProjectActionId = guid,
+                      Email = email
+                  },
+                  cancellationToken: CancellationToken.None);
             //assert
             result.ShouldBeNull();
         }

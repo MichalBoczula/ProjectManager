@@ -9,6 +9,7 @@ namespace Application.Features.EmployeeProjectsActions.Queries.Details
 {
     public class ProjectActionDetailsQuery : IRequest<ProjectActionDetailsVm>
     {
+        public string Email { get; set; }
         public string ProjectActionId { get; set; }
     }
 }

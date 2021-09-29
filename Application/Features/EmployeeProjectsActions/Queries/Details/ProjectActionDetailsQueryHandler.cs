@@ -24,16 +24,31 @@ namespace Application.Features.EmployeeProjectsActions.Queries.Details
 
         public async Task<ProjectActionDetailsVm> Handle(ProjectActionDetailsQuery request, CancellationToken cancellationToken)
         {
+            if (!Guid.TryParse(request.ProjectActionId, out Guid guid))
+            {
+                return null;
+            }
+
+            var employeeId = await (from e in _context.Employees
+                                    where e.Email == request.Email
+                                    select e.Id)
+                                    .FirstOrDefaultAsync(cancellationToken);
+
+            if(employeeId == Guid.Empty)
+            {
+                return null;
+            }
 
             var query = await (from pa in _context.ProjectActions
-                               where pa.Id == new Guid(request.ProjectActionId)
+                               where pa.Id == guid
                                join m in _context.Managers
                                    on pa.ManagerId equals m.Id
                                select new
                                {
                                    pa,
                                    m
-                               }).FirstOrDefaultAsync(cancellationToken);
+                               })
+                               .FirstOrDefaultAsync(cancellationToken);
 
             if (query != null)
             {

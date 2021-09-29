@@ -26,15 +26,18 @@ namespace Application.Features.EmployeeProjectsActions.Queries.List
         public async Task<List<ProjectVm>> Handle(ProjectsListForEmployeeQuery request, CancellationToken cancellationToken)
         {
 
-            var empIdQuery = from e in _context.Employees
-                             where e.Email == request.Email
-                             select new
-                             {
-                                 e.Id
-                             };
+            var empId = await (from e in _context.Employees
+                               where e.Email == request.Email
+                               select e.Id)
+                             .FirstOrDefaultAsync(cancellationToken);
+
+            if (empId == Guid.Empty)
+            {
+                return null;
+            }
+
             var actions = from pa in _context.ProjectActions
-                          join q in empIdQuery
-                              on pa.EmployeeId equals q.Id
+                          where pa.EmployeeId == empId
                           orderby pa.ProjectId
                           select pa;
 
@@ -72,15 +75,7 @@ namespace Application.Features.EmployeeProjectsActions.Queries.List
                 }
             }
 
-            if(result.Count > 0)
-            {
-                return result;
-
-            }
-            else
-            {
-                return null;
-            }
+            return result;
         }
     }
 }
