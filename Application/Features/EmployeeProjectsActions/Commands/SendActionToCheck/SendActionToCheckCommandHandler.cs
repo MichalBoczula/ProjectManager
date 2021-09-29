@@ -23,25 +23,38 @@ namespace Application.Features.EmployeeProjectsActions.Commands.SendActionToChec
 
         public async Task<Guid> Handle(SendActionToCheckCommand request, CancellationToken cancellationToken)
         {
-            try
+            if (!Guid.TryParse(request.ProjectActionId, out Guid actionId))
             {
-                var action = await (from pa in _context.ProjectActions
-                                    where new Guid(request.ProjectActionId) == pa.Id
-                                    select pa).FirstOrDefaultAsync(cancellationToken);
-                if (action != null)
-                {
-                    action.Status = ProgressStatus.ToCheck;
-                    _context.ProjectActions.Update(action);
-                    await _context.SaveChangesAsync(cancellationToken);
-                }
-                return action.Id;
-            }
-            catch (Exception e)
-            {
-
+                return Guid.Empty;
             }
 
-            return Guid.Empty;
+            var empId = await (from e in _context.Employees
+                               where e.Email == request.Email
+                               select e.Id)
+                        .FirstOrDefaultAsync(cancellationToken);
+
+            if (empId == Guid.Empty)
+            {
+                return Guid.Empty;
+            }
+
+            var action = await (from pa in _context.ProjectActions
+                                where pa.Id == actionId
+                                    && pa.EmployeeId == empId
+                                select pa)
+                                .FirstOrDefaultAsync(cancellationToken);
+
+            if (action == null)
+            {
+                return Guid.Empty;
+            }
+
+            action.Status = ProgressStatus.ToCheck;
+            _context.ProjectActions.Update(action);
+            await _context.SaveChangesAsync(cancellationToken);
+            
+            return action.Id;
+
         }
     }
 }

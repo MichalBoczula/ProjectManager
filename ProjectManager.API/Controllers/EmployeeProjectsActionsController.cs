@@ -14,10 +14,12 @@ namespace ProjectManager.API.Controllers
     [ApiController]
     public class EmployeeProjectsActionsController : BaseController
     {
-        [HttpGet("{email}/projects")]
+        [HttpGet("{email}/projects/")]
         public async Task<ActionResult<List<ProjectVm>>> GetList(string email)
         {
-            var vm = await Mediator.Send(new ProjectsListForEmployeeQuery() { Email = email });
+            var vm = await Mediator.Send(
+                new ProjectsListForEmployeeQuery() { Email = email });
+
             if (vm != null)
             {
                 return Ok(vm);
@@ -29,9 +31,15 @@ namespace ProjectManager.API.Controllers
         }
 
         [HttpGet("{email}/actions/{actionId}")]
-        public async Task<ActionResult<ProjectActionDetailsVm>> GetDetails(string actionId)
+        public async Task<ActionResult<ProjectActionDetailsVm>> GetDetails(string email, string actionId)
         {
-            var vm = await Mediator.Send(new ProjectActionDetailsQuery { ProjectActionId = actionId });
+            var vm = await Mediator.Send(
+                new ProjectActionDetailsQuery
+                {
+                    ProjectActionId = actionId,
+                    Email = email
+                });
+
             if (vm != null)
             {
                 return Ok(vm);
@@ -42,10 +50,18 @@ namespace ProjectManager.API.Controllers
             }
         }
 
-        [HttpPut("{email}/actions/{actionId}")]
-        public async Task<ActionResult<ProjectActionDetailsVm>> SendActionToCheck(string actionId)
+        [HttpPut("{email}/actions")]
+        public async Task<ActionResult<ProjectActionDetailsVm>> SendActionToCheck(
+            string email,
+            ProjectActionDetailsStatusDto data)
         {
-            var vm = await Mediator.Send(new SendActionToCheckCommand { ProjectActionId = actionId });
+            var vm = await Mediator.Send(
+                new SendActionToCheckCommand
+                {
+                    ProjectActionId = data.ProjectActionId,
+                    Email = email
+                });
+
             if (vm == Guid.Empty)
             {
                 return NotFound();
