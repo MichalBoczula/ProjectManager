@@ -1,4 +1,5 @@
-﻿using Application.Features.ManagerProjectAction.Queries.EmployeesList;
+﻿using Application.Features.Common.Exceptions;
+using Application.Features.ManagerProjectAction.Queries.EmployeesList;
 using AutoMapper;
 using Persistance.Context;
 using Shouldly;
@@ -36,8 +37,10 @@ namespace UnitTests.Features.ManagerProjectAction.Queries.EmployeesList
                 Email = "PaulAllen@email.com"
             }, CancellationToken.None);
             //assert
-            result.ShouldBeOfType<List<EmployeeForManagerVm>>();
-            foreach (var emp in result)
+            result.ShouldBeOfType<EmployeeForManagerQueryResult>();
+            result.AreThereException.ShouldBeFalse();
+            result.ExceptionsList.ShouldBeNull();
+            foreach (var emp in result.Vm)
             {
                 emp.FullName.ShouldBeOfType<string>();
                 emp.FullName.ShouldNotBeNullOrWhiteSpace();
@@ -47,7 +50,7 @@ namespace UnitTests.Features.ManagerProjectAction.Queries.EmployeesList
         }
 
         [Fact]
-        public async Task ShouldReturnNull()
+        public async Task ShouldExceptionsList()
         {
             //arrange
             var handler = new EmployeeListFormManagerQueryHandler(_context, _mapper);
@@ -57,7 +60,12 @@ namespace UnitTests.Features.ManagerProjectAction.Queries.EmployeesList
                 Email = "test@email.com"
             }, CancellationToken.None);
             //assert
-            result.ShouldBeNull();
+            result.ShouldBeOfType<EmployeeForManagerQueryResult>();
+            result.AreThereException.ShouldBeTrue();
+            result.Vm.ShouldBeNull();
+            result.ExceptionsList.Count.ShouldBe(1);
+            result.ExceptionsList[0].ShouldBeOfType<ManagerEmptyGuidException>();
+            result.ExceptionsList[0].Message.ShouldBe("Manager with  this GUID doesn't exists, Please check GUID");
         }
     }
 }

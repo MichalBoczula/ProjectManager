@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.ManagerProjectAction.Queries.EmployeesList
 {
-    public class EmployeeListFormManagerQuery : IRequest<List<EmployeeForManagerVm>>
+    public class EmployeeListFormManagerQuery : IRequest<EmployeeForManagerQueryResult>
     {
         public string Email { get; set; }
     }

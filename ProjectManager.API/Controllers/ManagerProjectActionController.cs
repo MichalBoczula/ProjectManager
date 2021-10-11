@@ -36,10 +36,10 @@ namespace ProjectManager.API.Controllers
         [HttpGet("{email}/employees")]
         public async Task<ActionResult<EmployeeForManagerVm>> GetEmployeeList(string email)
         {
-            var vm = await Mediator.Send(new EmployeeListFormManagerQuery() { Email = email });
-            return vm != null ?
-                Ok(vm) :
-                NotFound(vm);
+            var result = await Mediator.Send(new EmployeeListFormManagerQuery() { Email = email });
+            return result.AreThereException ?
+                NotFound(result.ExceptionsList) :
+                Ok(result.Vm);
         }
 
         [HttpGet("{email}/projects/{projectId}")]

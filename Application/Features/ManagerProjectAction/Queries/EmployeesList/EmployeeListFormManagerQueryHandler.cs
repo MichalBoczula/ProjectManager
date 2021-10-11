@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.ManagerProjectAction.Queries.EmployeesList
 {
-    public class EmployeeListFormManagerQueryHandler : IRequestHandler<EmployeeListFormManagerQuery, List<EmployeeForManagerVm>>
+    public class EmployeeListFormManagerQueryHandler : IRequestHandler<EmployeeListFormManagerQuery, EmployeeForManagerQueryResult>
     {
         private readonly IProjectManagerDbContext _context;
         private readonly IMapper _mapper;
@@ -22,28 +22,30 @@ namespace Application.Features.ManagerProjectAction.Queries.EmployeesList
             _mapper = mapper;
         }
 
-        public async Task<List<EmployeeForManagerVm>> Handle(EmployeeListFormManagerQuery request, CancellationToken cancellationToken)
+        public async Task<EmployeeForManagerQueryResult> Handle(EmployeeListFormManagerQuery request, CancellationToken cancellationToken)
         {
+            var exceptionsList = await EmployeeListForManagerValidator.ValidateAsync(request, _context, cancellationToken);
+
+            if (exceptionsList.Count() > 0)
+            {
+                return new EmployeeForManagerQueryResult(true, exceptionsList, null);
+            }
+
             var manager = from m in _context.Managers
                           where request.Email == m.Email
                           select m.Id;
-
-            if(await manager.FirstOrDefaultAsync(cancellationToken: cancellationToken) == Guid.Empty)
-            {
-                return null;
-            }
 
             var employees = from e in _context.Employees
                             select e;
 
             var result = new List<EmployeeForManagerVm>();
 
-            foreach(var ele in await employees.ToListAsync(cancellationToken))
+            foreach (var ele in await employees.ToListAsync(cancellationToken))
             {
                 result.Add(_mapper.Map<EmployeeForManagerVm>(ele));
             }
 
-            return result;
+            return  new EmployeeForManagerQueryResult(false, null, result);
         }
     }
 }
