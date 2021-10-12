@@ -33,21 +33,17 @@ namespace ProjectManager.API.Controllers
         [HttpGet("{email}/actions/{actionId}")]
         public async Task<ActionResult<ProjectActionDetailsVm>> GetDetails(string email, string actionId)
         {
-            var vm = await Mediator.Send(
+            var result = await Mediator.Send(
                 new ProjectActionDetailsQuery
                 {
                     ProjectActionId = actionId,
                     Email = email
                 });
 
-            if (vm != null)
-            {
-                return Ok(vm);
-            }
-            else
-            {
-                return NotFound(vm);
-            }
+            return result.AreThereException ?
+                 NotFound(result.ExceptionsList) :
+                 Ok(result.Vm);
+
         }
 
         [HttpPut("{email}/actions")]
