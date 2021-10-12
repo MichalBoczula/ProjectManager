@@ -64,7 +64,7 @@ namespace UnitTests.Features.ManagerProjectAction.Queries.EmployeesList
             result.AreThereException.ShouldBeTrue();
             result.Vm.ShouldBeNull();
             result.ExceptionsList.Count.ShouldBe(1);
-            result.ExceptionsList[0].ShouldBeOfType<ManagerEmptyGuidException>();
+            result.ExceptionsList[0].ShouldBeOfType<ManagerDoesntExistsException>();
             result.ExceptionsList[0].Message.ShouldBe("Manager with  this GUID doesn't exists, Please check GUID");
         }
     }

@@ -24,7 +24,7 @@ namespace Application.Features.ManagerProjectAction.Queries.EmployeesList
 
             if (await manager.FirstOrDefaultAsync(cancellationToken) == Guid.Empty)
             {
-                list.Add(new ManagerEmptyGuidException());
+                list.Add(new ManagerDoesntExistsException());
             }
 
             return list;

@@ -26,7 +26,7 @@ namespace Application.Features.ManagerProjectAction.Queries.EmployeesList
         {
             var exceptionsList = await EmployeeListForManagerValidator.ValidateAsync(request, _context, cancellationToken);
 
-            if (exceptionsList.Count() > 0)
+            if (exceptionsList.Count > 0)
             {
                 return new EmployeeForManagerQueryResult(true, exceptionsList, null);
             }

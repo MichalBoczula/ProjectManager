@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Common.Exceptions
 {
-    public class ManagerEmptyGuidException : Exception
+    public class ProjectActionDoesntExistsException : Exception
     {
-        public const string message = "Manager with  this GUID doesn't exists, Please check GUID";
+        public const string message = "Project Action doesn't exists, Please check GUID";
 
-        public ManagerEmptyGuidException()
+        public ProjectActionDoesntExistsException()
             : base(message)
         {
         }
-}
+    }
 }
