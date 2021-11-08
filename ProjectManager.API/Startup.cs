@@ -1,5 +1,6 @@
 using Application.Contracts.Identity;
 using Application.DependencyInjection;
+using Application.Features.ForTraning;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -38,6 +39,7 @@ namespace ProjectManager.API
             services.AddControllers();
             services.AddPersistance(Configuration);
             services.AddApplication();
+            services.AddTransient<IRepositoryForTesting, RepositoryForTesting>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddCors(opt =>
